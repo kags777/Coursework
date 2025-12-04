@@ -1,0 +1,37 @@
+﻿<UserControl x:Class="Coursework.OrderEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:Coursework"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
+
+    <StackPanel Margin="15">
+
+        <TextBlock Text="Дата загрузки:"/>
+        <DatePicker SelectedDate="{Binding DateLoading}"/>
+
+        <TextBlock Text="Отправитель:"/>
+        <TextBox Text="{Binding ClientSender, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock Text="Адрес загрузки:"/>
+        <TextBox Text="{Binding LoadingAddress, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock Text="Получатель:"/>
+        <TextBox Text="{Binding ClientRecipient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+        <TextBlock Text="Адрес выгрузки:"/>
+        <TextBox Text="{Binding UnloadingAddress}"/>
+
+        <TextBlock Text="Длина маршрута (км):"/>
+        <TextBox Text="{Binding RouteLength}"/>
+
+        <TextBlock Text="Общая стоимость товаров (руб):"/>
+        <TextBox Text="{Binding Cost}"/>
+
+        <Button Content="Сохранить" Margin="0 20 0 0"
+                Click="Save_Click"/>
+    </StackPanel>
+</UserControl>
