@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-
 namespace Coursework
 {
-    public class Order : IOrderServ
+    public class Order
     {
         public DateTime DateLoading { get; set; }
         public DateTime DateUnloading { get; set; }
-        public string ClientSender { get; set; }
+        public Client Client { get; set; }
         public string LoadingAddress { get; set; }
-        public string ClientRecipient { get; set; }
         public string UnloadingAddress { get; set; }
         public float RouteLength { get; set; }
         public float Cost { get; set; }
@@ -28,4 +26,5 @@ namespace Coursework
             Cost = (BaseRate * routeLength) + (insuranceCost * RiskCoefficient);
         }
     }
+
 }

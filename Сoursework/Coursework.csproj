@@ -64,9 +64,21 @@
     <Compile Include="CarEditor.xaml.cs">
       <DependentUpon>CarEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CargoWindow.xaml.cs">
+      <DependentUpon>CargoWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CarWindow.xaml.cs">
+      <DependentUpon>CarWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ClientWindow.xaml.cs">
+      <DependentUpon>ClientWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataStore.cs" />
     <Compile Include="DriverEditor.xaml.cs">
       <DependentUpon>DriverEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DriverWindow.xaml.cs">
+      <DependentUpon>DriverWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ITripServ.cs" />
     <Compile Include="OrderEditor.xaml.cs">
@@ -81,7 +93,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="CargoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CarWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ClientWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DriverEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DriverWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

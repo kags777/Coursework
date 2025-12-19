@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace Coursework
@@ -8,30 +7,28 @@ namespace Coursework
     {
         private DataStore store;
 
-        public CarEditor(DataStore store)
+        public CarEditor(DataStore dataStore)
         {
             InitializeComponent();
-            this.store = store;
-            store.Load();
-            CarListBox.ItemsSource = store.Cars;
+            store = dataStore;
+            Refresh();
         }
 
         private void AddCar_Click(object sender, RoutedEventArgs e)
         {
-            var car = new Car { Number = "Новая машина", Brand = "Марка", Model = "Модель" };
-            store.Cars.Add(car);
-            CarListBox.Items.Refresh();
-            store.Save();
+            var window = new CarWindow();
+            if (window.ShowDialog() == true)
+            {
+                store.AddCar(window.Car);
+                Refresh();
+            }
         }
 
-        private void RemoveCar_Click(object sender, RoutedEventArgs e)
+        public void Refresh()
         {
-            if (CarListBox.SelectedItem is Car car)
-            {
-                store.Cars.Remove(car);
-                CarListBox.Items.Refresh();
-                store.Save();
-            }
+            CarList.ItemsSource = null;
+            CarList.ItemsSource = store.Cars;
+            CarList.DisplayMemberPath = "Number";
         }
     }
 }

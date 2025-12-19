@@ -7,30 +7,28 @@ namespace Coursework
     {
         private DataStore store;
 
-        public DriverEditor(DataStore store)
+        public DriverEditor(DataStore dataStore)
         {
             InitializeComponent();
-            this.store = store;
-            store.Load();
-            DriverListBox.ItemsSource = store.Drivers;
+            store = dataStore;
+            Refresh();
         }
 
         private void AddDriver_Click(object sender, RoutedEventArgs e)
         {
-            var driver = new Driver { NameDriver = "Новый водитель", Age = 30, Experience = 5 };
-            store.Drivers.Add(driver);
-            DriverListBox.Items.Refresh();
-            store.Save();
+            var window = new DriverWindow();
+            if (window.ShowDialog() == true)
+            {
+                store.AddDriver(window.Driver);
+                Refresh();
+            }
         }
 
-        private void RemoveDriver_Click(object sender, RoutedEventArgs e)
+        public void Refresh()
         {
-            if (DriverListBox.SelectedItem is Driver driver)
-            {
-                store.Drivers.Remove(driver);
-                DriverListBox.Items.Refresh();
-                store.Save();
-            }
+            DriverList.ItemsSource = null;
+            DriverList.ItemsSource = store.Drivers;
+            DriverList.DisplayMemberPath = "NameDriver";
         }
     }
 }

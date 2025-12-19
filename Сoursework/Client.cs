@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Coursework
+﻿namespace Coursework
 {
-    internal class Client
+    public class Client
     {
-        public Client() { }
-
-        private string clientType;
-        private string nameClient;
-        private string passport;
-        private string nameLegalEntity;
-        private string leaderName;
-        private string legaladdress;
-        private string legalphNumber;
-        private string bank;
-        private string bankAccountNumber;
-        private string TIN; //ИНН 
+        public string ClientType { get; set; } // "Физическое" или "Юридическое"
+                                               // Физическое лицо
+        public string NameClient { get; set; }
+        public string PhoneClient { get; set; }
+        public string Passport { get; set; }
+        // Юридическое лицо
+        public string NameLegalEntity { get; set; }
+        public string LeaderName { get; set; }
+        public string LegalAddress { get; set; }
+        public string LegalPhoneNumber { get; set; }
+        public string Bank { get; set; }
+        public string BankAccountNumber { get; set; }
+        public string TIN { get; set; }
     }
 }

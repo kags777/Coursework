@@ -14,26 +14,28 @@ namespace Coursework
 
         private void CreateOrder_Click(object sender, RoutedEventArgs e)
         {
-            var editor = new OrderEditor(store);
-            RightPanel.Content = editor;
+            RightPanel.Content = new OrderEditor(store);
         }
 
         private void ManageCars_Click(object sender, RoutedEventArgs e)
         {
-            var editor = new CarEditor(store);
-            RightPanel.Content = editor;
+            RightPanel.Content = new CarEditor(store);
         }
 
         private void ManageDrivers_Click(object sender, RoutedEventArgs e)
         {
-            var editor = new DriverEditor(store);
-            RightPanel.Content = editor;
+            RightPanel.Content = new DriverEditor(store);
         }
 
         private void ActiveOrders_Click(object sender, RoutedEventArgs e)
         {
-            var editor = new ActiveOrdersEditor(store);
-            RightPanel.Content = editor;
+            RightPanel.Content = new ActiveOrdersEditor(store);
+        }
+
+        public void RefreshActiveOrders()
+        {
+            if (RightPanel.Content is ActiveOrdersEditor activeEditor)
+                activeEditor.Refresh();
         }
     }
 }

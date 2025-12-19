@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-
 namespace Coursework
 {
-    public class Car : ICarServ
+    public class Car
     {
-        public string Number { get; set; } // госномер
+        public string Number { get; set; }
         public string Brand { get; set; }
         public string Model { get; set; }
         public int MaxLoad { get; set; }
@@ -15,13 +14,7 @@ namespace Coursework
         public int Mileage { get; set; }
         public string Photo { get; set; }
 
-        // Список занятых периодов
         public List<Tuple<DateTime, DateTime>> BusyPeriods { get; set; } = new List<Tuple<DateTime, DateTime>>();
-
-        public void MileageCalc(int routeLength)
-        {
-            Mileage += routeLength;
-        }
 
         public bool IsAvailable(DateTime start, DateTime end)
         {
@@ -32,5 +25,11 @@ namespace Coursework
             }
             return true;
         }
+
+        public void MileageCalc(int routeLength)
+        {
+            Mileage += routeLength;
+        }
+
     }
 }

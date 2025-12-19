@@ -1,6 +1,6 @@
 ﻿namespace Coursework
 {
-    public class Cargo : ICargoServ
+    public class Cargo
     {
         public string Nomination { get; set; }
         public int Quantity { get; set; }

@@ -1,0 +1,41 @@
+﻿<Window x:Class="Coursework.CarWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="Добавить/Редактировать машину"
+        Height="450"
+        Width="350">
+    <StackPanel Margin="10" VerticalAlignment="Top">
+
+        <TextBlock Text="Госномер"/>
+        <TextBox x:Name="Number"/>
+
+        <TextBlock Text="Марка"/>
+        <TextBox x:Name="Brand"/>
+
+        <TextBlock Text="Модель"/>
+        <TextBox x:Name="Model"/>
+
+        <TextBlock Text="Грузоподъемность"/>
+        <TextBox x:Name="MaxLoad"/>
+
+        <TextBlock Text="Назначение"/>
+        <TextBox x:Name="Appointment"/>
+
+        <TextBlock Text="Год выпуска"/>
+        <TextBox x:Name="YearBorn"/>
+
+        <TextBlock Text="Год ремонта"/>
+        <TextBox x:Name="YearRepairs"/>
+
+        <TextBlock Text="Пробег"/>
+        <TextBox x:Name="Mileage"/>
+
+        <TextBlock Text="Фото (путь)"/>
+        <TextBox x:Name="Photo"/>
+
+        <Button Content="Сохранить" Click="Save_Click" Margin="0,10,0,0" Height="30"/>
+    </StackPanel>
+</Window>

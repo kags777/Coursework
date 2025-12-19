@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -9,29 +8,37 @@ namespace Coursework
     {
         private DataStore store;
 
-        public ActiveOrdersEditor(DataStore store)
+        public ActiveOrdersEditor(DataStore dataStore)
         {
             InitializeComponent();
-            this.store = store;
-            store.Load();
-            OrdersListBox.ItemsSource = store.Orders.Where(o => o.DateUnloading >= DateTime.Now).ToList();
+            store = dataStore;
+            Refresh();
+        }
+
+        public void Refresh()
+        {
+            OrdersListBox.ItemsSource = null;
+            OrdersListBox.ItemsSource = store.Orders
+                .Where(o => o.DateUnloading >= System.DateTime.Now)
+                .ToList();
         }
 
         private void CompleteOrder_Click(object sender, RoutedEventArgs e)
         {
             if (OrdersListBox.SelectedItem is Order order)
             {
-                // Освобождаем машину и водителя
-                if (order.AssignedCar != null)
-                    order.AssignedCar.BusyPeriods.RemoveAll(p => p.Item1 == order.DateLoading && p.Item2 == order.DateUnloading);
-                if (order.AssignedDriver != null)
-                    order.AssignedDriver.BusyPeriods.RemoveAll(p => p.Item1 == order.DateLoading && p.Item2 == order.DateUnloading);
-
                 store.Orders.Remove(order);
+
+                if (order.AssignedCar != null)
+                    order.AssignedCar.BusyPeriods.RemoveAll(p =>
+                        p.Item1 == order.DateLoading && p.Item2 == order.DateUnloading);
+
+                if (order.AssignedDriver != null)
+                    order.AssignedDriver.BusyPeriods.RemoveAll(p =>
+                        p.Item1 == order.DateLoading && p.Item2 == order.DateUnloading);
+
                 store.Save();
-                OrdersListBox.ItemsSource = store.Orders.Where(o => o.DateUnloading >= DateTime.Now).ToList();
-                OrdersListBox.Items.Refresh();
-                MessageBox.Show("Заказ завершён");
+                Refresh();
             }
         }
     }

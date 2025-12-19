@@ -1,0 +1,42 @@
+﻿<Window x:Class="Coursework.ClientWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Информация о клиенте" Height="400" Width="400">
+    <StackPanel Margin="10">
+        <TextBlock Text="Тип клиента"/>
+        <ComboBox x:Name="ClientTypeComboBox">
+            <ComboBoxItem Content="Физическое"/>
+            <ComboBoxItem Content="Юридическое"/>
+        </ComboBox>
+
+        <!-- Физическое лицо -->
+        <StackPanel x:Name="PhysicalPanel" Visibility="Visible">
+            <TextBlock Text="ФИО"/>
+            <TextBox x:Name="NameClient"/>
+            <TextBlock Text="Телефон"/>
+            <TextBox x:Name="PhoneClient"/>
+            <TextBlock Text="Паспорт"/>
+            <TextBox x:Name="Passport"/>
+        </StackPanel>
+
+        <!-- Юридическое лицо -->
+        <StackPanel x:Name="LegalPanel" Visibility="Collapsed">
+            <TextBlock Text="Название организации"/>
+            <TextBox x:Name="NameLegalEntity"/>
+            <TextBlock Text="ФИО руководителя"/>
+            <TextBox x:Name="LeaderName"/>
+            <TextBlock Text="Юридический адрес"/>
+            <TextBox x:Name="LegalAddress"/>
+            <TextBlock Text="Телефон"/>
+            <TextBox x:Name="LegalPhoneNumber"/>
+            <TextBlock Text="Банк"/>
+            <TextBox x:Name="Bank"/>
+            <TextBlock Text="Расчетный счет"/>
+            <TextBox x:Name="BankAccountNumber"/>
+            <TextBlock Text="ИНН"/>
+            <TextBox x:Name="TIN"/>
+        </StackPanel>
+
+        <Button Content="Сохранить" Click="Save_Click" Margin="0,10,0,0"/>
+    </StackPanel>
+</Window>

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace Coursework
 {
@@ -35,25 +34,8 @@ namespace Coursework
             File.WriteAllText(FilePath, json);
         }
 
-        public void AddOrder(Order order)
-        {
-            Load();
-            Orders.Add(order);
-            Save();
-        }
-
-        public void AddCar(Car car)
-        {
-            Load();
-            Cars.Add(car);
-            Save();
-        }
-
-        public void AddDriver(Driver driver)
-        {
-            Load();
-            Drivers.Add(driver);
-            Save();
-        }
+        public void AddOrder(Order o) => Orders.Add(o);
+        public void AddCar(Car c) => Cars.Add(c);
+        public void AddDriver(Driver d) => Drivers.Add(d);
     }
 }

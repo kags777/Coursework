@@ -2,9 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <StackPanel Margin="10">
-        <TextBlock Text="Список водителей"/>
-        <ListBox x:Name="DriverListBox" DisplayMemberPath="NameDriver" Height="200"/>
-        <Button Content="Добавить водителя" Click="AddDriver_Click" Margin="0,10,0,0"/>
-        <Button Content="Удалить водителя" Click="RemoveDriver_Click" Margin="0,5,0,0"/>
+        <Button Content="Добавить водителя" Click="AddDriver_Click" Margin="0,0,0,10"/>
+        <ListBox x:Name="DriverList"/>
     </StackPanel>
 </UserControl>
