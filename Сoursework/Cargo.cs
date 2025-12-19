@@ -1,27 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Coursework
+﻿namespace Coursework
 {
-    public class Cargo
+    public class Cargo : ICargoServ
     {
-        public Cargo() { }
-
-        private string nomination; 
-        private int quantity;
-        private float weight;
-        private int insuranceСost;//стоимость страховки
-        private int cost; //оценочная стоимость всех товаров
-        private int baseInsurance = 5000;//фиксированная страховка
-        private bool fragileCargo;
+        public string Nomination { get; set; }
+        public int Quantity { get; set; }
+        public float Weight { get; set; }
+        public int InsuranceCost { get; set; }
+        public int Cost { get; set; }
+        public int BaseInsurance { get; set; } = 5000;
+        public bool FragileCargo { get; set; }
 
         public void CalcInsurance()
         {
-            insuranceСost = baseInsurance + (cost * (3/100));
+            InsuranceCost = BaseInsurance + (int)(Cost * 0.03f);
         }
-
     }
 }

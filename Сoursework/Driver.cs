@@ -1,21 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Coursework
 {
-    internal class Driver 
+    public class Driver
     {
-        public Driver() { }
+        public int PersNumber { get; set; }
+        public string NameDriver { get; set; }
+        public int Age { get; set; }
+        public int Experience { get; set; }
+        public string Category { get; set; }
+        public string Classic { get; set; }
 
-        private int persNumber;
-        private string nameDriver;
-        private int age;
-        private int experience;//стаж
-        private string category;
-        private string classic;//классность
+        public List<Tuple<DateTime, DateTime>> BusyPeriods { get; set; } = new List<Tuple<DateTime, DateTime>>();
 
+        public bool IsAvailable(DateTime start, DateTime end)
+        {
+            foreach (var period in BusyPeriods)
+            {
+                if (start < period.Item2 && end > period.Item1)
+                    return false;
+            }
+            return true;
+        }
     }
 }

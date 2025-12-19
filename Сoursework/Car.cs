@@ -1,33 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Coursework
 {
-    internal class Car : ICarServ
+    public class Car : ICarServ
     {
-        private string number; //госНомер
-        private string brand;//марка
-        private string model; //модель
-        private int maxLoad; //грузоподъемность
-        private string appointment; //назначение
-        private int yearBorn; //год выпуска
-        private int yearRepairs; //годКапРемонта
-        private int mileage; //пробег
-        private string photo; //хранит путь до файла
+        public string Number { get; set; } // госномер
+        public string Brand { get; set; }
+        public string Model { get; set; }
+        public int MaxLoad { get; set; }
+        public string Appointment { get; set; }
+        public int YearBorn { get; set; }
+        public int YearRepairs { get; set; }
+        public int Mileage { get; set; }
+        public string Photo { get; set; }
 
+        // Список занятых периодов
+        public List<Tuple<DateTime, DateTime>> BusyPeriods { get; set; } = new List<Tuple<DateTime, DateTime>>();
 
-        public Car() { }
-
-        //расчет пробега
-        public void MileageCalc(int routeLength )
+        public void MileageCalc(int routeLength)
         {
-            mileage = mileage + routeLength;
+            Mileage += routeLength;
         }
 
-
-
+        public bool IsAvailable(DateTime start, DateTime end)
+        {
+            foreach (var period in BusyPeriods)
+            {
+                if (start < period.Item2 && end > period.Item1)
+                    return false;
+            }
+            return true;
+        }
     }
 }

@@ -1,53 +1,50 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Coursework
-
 {
-    /// <summary>
-    /// Логика взаимодействия для OrderEditor.xaml
-    /// </summary>
-
-
     public partial class OrderEditor : UserControl
     {
-        public event Action<Order> OrderSaved;
+        public ObservableCollection<Cargo> CargoList { get; set; } = new ObservableCollection<Cargo>();
+        private DataStore store;
 
-        public OrderEditor()
+        public OrderEditor(DataStore store)
         {
             InitializeComponent();
+            this.store = store;
+            DataContext = new Order();
+            CarComboBox.ItemsSource = store.Cars;
+            CarComboBox.DisplayMemberPath = "Number";
+            DriverComboBox.ItemsSource = store.Drivers;
+            DriverComboBox.DisplayMemberPath = "NameDriver";
         }
 
-        private void Save_Click(object sender, RoutedEventArgs e)
+        private void AddCargo_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            MessageBox.Show("Нажата кнопка 'Сохранить'");
+            CargoList.Add(new Cargo { Nomination = "Новый груз" });
+        }
 
+        private void Save_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
             var order = DataContext as Order;
-
-            if (order == null)
+            if (order != null)
             {
-                MessageBox.Show("DataContext пустой!");
-                return;
-            }
-            else
-            {
-                MessageBox.Show("DataContext нормальный, вызываем OrderSaved");
-            }
+                order.Loads = CargoList.ToList();
+                order.AssignedCar = CarComboBox.SelectedItem as Car;
+                order.AssignedDriver = DriverComboBox.SelectedItem as Driver;
 
-            OrderSaved?.Invoke(order);
-            MessageBox.Show("OrderSaved вызван!");
+                // Блокируем машину и водителя на даты заказа
+                if (order.AssignedCar != null)
+                    order.AssignedCar.BusyPeriods.Add(Tuple.Create(order.DateLoading, order.DateUnloading));
+                if (order.AssignedDriver != null)
+                    order.AssignedDriver.BusyPeriods.Add(Tuple.Create(order.DateLoading, order.DateUnloading));
+
+                store.AddOrder(order);
+                store.Save();
+                System.Windows.MessageBox.Show("Заказ сохранён!");
+            }
         }
     }
-
 }

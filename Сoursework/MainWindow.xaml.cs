@@ -1,57 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
 
 namespace Coursework
 {
-    /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        private DataStore store = new DataStore(); 
+        private DataStore store = new DataStore();
+
         public MainWindow()
         {
             InitializeComponent();
+            store.Load();
         }
 
         private void CreateOrder_Click(object sender, RoutedEventArgs e)
         {
-            var editor = new OrderEditor();
-            editor.DataContext = new Order(); // новый пустой заказ для заполнения
-            editor.OrderSaved += OnOrderSaved;
-
-            RightPanel.Content = editor; // показываем справа
-            MessageBox.Show("Редактор создан, DataContext = " + (editor.DataContext != null));
-
+            var editor = new OrderEditor(store);
+            RightPanel.Content = editor;
         }
 
-        private void OnOrderSaved(Order order)
+        private void ManageCars_Click(object sender, RoutedEventArgs e)
         {
-            Dispatcher.Invoke(() =>
-            {
-                Console.WriteLine("OnOrderSaved вызван!");
-                store.Orders.Add(order);
-                store.Save();
-                Console.WriteLine("Файл должен сохраниться");
+            var editor = new CarEditor(store);
+            RightPanel.Content = editor;
+        }
 
-                MessageBox.Show("Заказ сохранён!");
-                RightPanel.Content = null;
-                MessageBox.Show("OnOrderSaved вызван, Orders.Count = " + store.Orders.Count);
-            });
+        private void ManageDrivers_Click(object sender, RoutedEventArgs e)
+        {
+            var editor = new DriverEditor(store);
+            RightPanel.Content = editor;
+        }
 
+        private void ActiveOrders_Click(object sender, RoutedEventArgs e)
+        {
+            var editor = new ActiveOrdersEditor(store);
+            RightPanel.Content = editor;
         }
     }
 }

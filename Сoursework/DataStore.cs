@@ -2,8 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
-using System.Windows;
+using System.Linq;
 
 namespace Coursework
 {
@@ -12,8 +11,9 @@ namespace Coursework
         private const string FilePath = "data.json";
 
         public List<Order> Orders { get; set; } = new List<Order>();
+        public List<Car> Cars { get; set; } = new List<Car>();
+        public List<Driver> Drivers { get; set; } = new List<Driver>();
 
-        // Загрузка данных
         public void Load()
         {
             if (File.Exists(FilePath))
@@ -22,18 +22,38 @@ namespace Coursework
                 var data = JsonConvert.DeserializeObject<DataStore>(json);
                 if (data != null)
                 {
-                    Orders = data.Orders;
+                    Orders = data.Orders ?? new List<Order>();
+                    Cars = data.Cars ?? new List<Car>();
+                    Drivers = data.Drivers ?? new List<Driver>();
                 }
             }
         }
 
-        // Сохранение данных
         public void Save()
         {
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
             File.WriteAllText(FilePath, json);
-            MessageBox.Show($"JSON сохранён в {FilePath}");
+        }
+
+        public void AddOrder(Order order)
+        {
+            Load();
+            Orders.Add(order);
+            Save();
+        }
+
+        public void AddCar(Car car)
+        {
+            Load();
+            Cars.Add(car);
+            Save();
+        }
+
+        public void AddDriver(Driver driver)
+        {
+            Load();
+            Drivers.Add(driver);
+            Save();
         }
     }
 }
-
