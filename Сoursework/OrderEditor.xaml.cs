@@ -9,7 +9,9 @@ namespace Coursework
         private DataStore store;
         private MainWindow main;
         private Order order;
+        private bool isEditing = false;
 
+        // Если передан существующий заказ → редактирование
         public OrderEditor(DataStore ds, MainWindow mw, Order existingOrder = null)
         {
             InitializeComponent();
@@ -19,7 +21,8 @@ namespace Coursework
             if (existingOrder != null)
             {
                 order = existingOrder;
-                FillFields();
+                isEditing = true;
+                LoadOrderToUI();
             }
             else
             {
@@ -33,9 +36,9 @@ namespace Coursework
             RefreshCargo();
         }
 
-        private void FillFields()
+        private void LoadOrderToUI()
         {
-            // Заполняем поля клиента
+            // Клиент
             if (order.ClientSender.ClientType == "Физическое")
             {
                 ClientTypeComboBox.SelectedIndex = 0;
@@ -58,7 +61,9 @@ namespace Coursework
             LoadingAddressBox.Text = order.LoadingAddress;
             UnloadingAddressBox.Text = order.UnloadingAddress;
             RouteLengthBox.Text = order.RouteLength.ToString();
-            RefreshCargo();
+
+            // Водитель и машина
+            // Для простоты можно просто показывать имя выбранного водителя/машины, если нужно, можно сделать отдельное поле
         }
 
         private void AddCargo_Click(object sender, RoutedEventArgs e)
@@ -104,7 +109,7 @@ namespace Coursework
             order.UnloadingAddress = UnloadingAddressBox.Text;
             order.RouteLength = float.TryParse(RouteLengthBox.Text, out var len) ? len : 0;
 
-            // Выбор водителя и машины
+            // Назначение водителя и машины (по желанию)
             AssignDriverCarWindow assignWin = new AssignDriverCarWindow(store);
             if (assignWin.ShowDialog() == true)
             {
@@ -112,19 +117,21 @@ namespace Coursework
                 order.AssignedCar = assignWin.SelectedCar;
             }
 
-            // Если это новый заказ, добавляем в DataStore
-            if (!store.Orders.Contains(order))
-            {
+            // Статус
+            if (!isEditing)
                 order.Status = "Создан";
-                store.AddOrder(order);
+
+            if (!isEditing)
+            {
+                store.AddOrder(order); // добавляем новый заказ
             }
             else
             {
-                store.Save(); // если редактируем существующий заказ
+                store.Save(); // сохраняем изменения существующего заказа
             }
 
             main.RefreshCreatedOrders();
-            MessageBox.Show("Заказ сохранён!");
+            MessageBox.Show(isEditing ? "Заказ обновлён!" : "Заказ создан!");
         }
     }
 }
