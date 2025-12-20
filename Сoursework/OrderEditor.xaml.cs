@@ -10,18 +10,54 @@ namespace Coursework
         private MainWindow main;
         private Order order;
 
-        public OrderEditor(DataStore ds, MainWindow mw)
+        public OrderEditor(DataStore ds, MainWindow mw, Order existingOrder = null)
         {
             InitializeComponent();
             store = ds;
             main = mw;
 
-            order = new Order
+            if (existingOrder != null)
             {
-                Loads = new System.Collections.Generic.List<Cargo>(),
-                ClientSender = new Client()
-            };
+                order = existingOrder;
+                FillFields();
+            }
+            else
+            {
+                order = new Order
+                {
+                    Loads = new System.Collections.Generic.List<Cargo>(),
+                    ClientSender = new Client()
+                };
+            }
 
+            RefreshCargo();
+        }
+
+        private void FillFields()
+        {
+            // Заполняем поля клиента
+            if (order.ClientSender.ClientType == "Физическое")
+            {
+                ClientTypeComboBox.SelectedIndex = 0;
+                NameClientBox.Text = order.ClientSender.NameClient;
+                PhoneClientBox.Text = order.ClientSender.PhoneClient;
+                PassportBox.Text = order.ClientSender.Passport;
+            }
+            else
+            {
+                ClientTypeComboBox.SelectedIndex = 1;
+                LegalNameBox.Text = order.ClientSender.NameLegalEntity;
+                LeaderNameBox.Text = order.ClientSender.LeaderName;
+                LegalAddressBox.Text = order.ClientSender.LegalAddress;
+                LegalPhoneBox.Text = order.ClientSender.LegalPhoneNumber;
+                BankBox.Text = order.ClientSender.Bank;
+                BankAccountBox.Text = order.ClientSender.BankAccountNumber;
+                TINBox.Text = order.ClientSender.TIN;
+            }
+
+            LoadingAddressBox.Text = order.LoadingAddress;
+            UnloadingAddressBox.Text = order.UnloadingAddress;
+            RouteLengthBox.Text = order.RouteLength.ToString();
             RefreshCargo();
         }
 
@@ -76,10 +112,19 @@ namespace Coursework
                 order.AssignedCar = assignWin.SelectedCar;
             }
 
-            order.Status = "Создан";
-            store.AddOrder(order);
+            // Если это новый заказ, добавляем в DataStore
+            if (!store.Orders.Contains(order))
+            {
+                order.Status = "Создан";
+                store.AddOrder(order);
+            }
+            else
+            {
+                store.Save(); // если редактируем существующий заказ
+            }
+
             main.RefreshCreatedOrders();
-            MessageBox.Show("Заказ создан!");
+            MessageBox.Show("Заказ сохранён!");
         }
     }
 }

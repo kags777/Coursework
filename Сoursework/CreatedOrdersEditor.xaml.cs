@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Coursework
@@ -20,6 +21,49 @@ namespace Coursework
         {
             OrdersList.ItemsSource = null;
             OrdersList.ItemsSource = store.Orders.Where(o => o.Status == "Создан").ToList();
+        }
+
+        private void EditOrder_Click(object sender, RoutedEventArgs e)
+        {
+            if (OrdersList.SelectedItem is Order selected)
+            {
+                OrderEditor editor = new OrderEditor(store, main, selected);
+                // Можно открыть в отдельном окне или заменить контент
+                // Для простоты откроем как окно:
+                Window win = new Window
+                {
+                    Title = "Редактирование заказа",
+                    Content = editor,
+                    Height = 800,
+                    Width = 400
+                };
+                win.ShowDialog();
+                Refresh();
+            }
+        }
+
+        private void DeleteOrder_Click(object sender, RoutedEventArgs e)
+        {
+            if (OrdersList.SelectedItem is Order selected)
+            {
+                if (MessageBox.Show("Удалить заказ?", "Подтверждение", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    store.Orders.Remove(selected);
+                    store.Save();
+                    Refresh();
+                }
+            }
+        }
+
+        private void ActivateOrder_Click(object sender, RoutedEventArgs e)
+        {
+            if (OrdersList.SelectedItem is Order selected)
+            {
+                selected.Status = "Active";
+                store.Save();
+                Refresh();
+                MessageBox.Show("Заказ отправлен на выполнение!");
+            }
         }
     }
 }
