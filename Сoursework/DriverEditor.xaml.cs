@@ -6,18 +6,20 @@ namespace Coursework
     public partial class DriverEditor : UserControl
     {
         private DataStore store;
+        private MainWindow main;
 
-        public DriverEditor(DataStore ds)
+        public DriverEditor(DataStore ds, MainWindow mw)
         {
             InitializeComponent();
             store = ds;
-            RefreshDrivers();
+            main = mw;
+            RefreshDriverList();
         }
 
-        private void RefreshDrivers()
+        private void RefreshDriverList()
         {
-            DriverList.ItemsSource = null;
-            DriverList.ItemsSource = store.Drivers;
+            DriverListBox.ItemsSource = null;
+            DriverListBox.ItemsSource = store.Drivers;
         }
 
         private void AddDriver_Click(object sender, RoutedEventArgs e)
@@ -25,30 +27,35 @@ namespace Coursework
             DriverWindow win = new DriverWindow();
             if (win.ShowDialog() == true)
             {
-                store.AddDriver(win.Driver);
-                RefreshDrivers();
+                store.Drivers.Add(win.Driver);
+                store.Save();
+                RefreshDriverList();
             }
         }
 
         private void EditDriver_Click(object sender, RoutedEventArgs e)
         {
-            if (DriverList.SelectedItem is Driver driver)
+            if (DriverListBox.SelectedItem is Driver selected)
             {
-                DriverWindow win = new DriverWindow(driver);
+                DriverWindow win = new DriverWindow(selected);
                 if (win.ShowDialog() == true)
                 {
-                    RefreshDrivers();
+                    store.Save();
+                    RefreshDriverList();
                 }
             }
         }
 
         private void DeleteDriver_Click(object sender, RoutedEventArgs e)
         {
-            if (DriverList.SelectedItem is Driver driver)
+            if (DriverListBox.SelectedItem is Driver selected)
             {
-                store.Drivers.Remove(driver);
-                store.Save();
-                RefreshDrivers();
+                if (MessageBox.Show($"Удалить водителя {selected.NameDriver}?", "Подтверждение", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    store.Drivers.Remove(selected);
+                    store.Save();
+                    RefreshDriverList();
+                }
             }
         }
     }

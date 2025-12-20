@@ -1,63 +1,61 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 
 namespace Coursework
 {
     public partial class MainWindow : Window
     {
-        private DataStore store;
+        private DataStore store = new DataStore();
 
         public MainWindow()
         {
             InitializeComponent();
-            store = new DataStore();
             store.Load();
         }
 
         private void CreateOrder_Click(object sender, RoutedEventArgs e)
         {
-            RightPanel.Content = new OrderEditor(store, this);
+            var editor = new OrderEditor(store, this);
+            RightPanel.Content = editor;
+        }
+
+        private void ManageCars_Click(object sender, RoutedEventArgs e)
+        {
+            var editor = new CarEditor(store, this);
+            RightPanel.Content = editor;
+        }
+
+        private void ManageDrivers_Click(object sender, RoutedEventArgs e)
+        {
+            var editor = new DriverEditor(store, this);
+            RightPanel.Content = editor;
         }
 
         private void CreatedOrders_Click(object sender, RoutedEventArgs e)
         {
-            RightPanel.Content = new CreatedOrdersEditor(store, this);
+            var editor = new CreatedOrdersEditor(store, this);
+            RightPanel.Content = editor;
         }
 
-        private void ActiveOrders_Click(object sender, RoutedEventArgs e)
-        {
-            RightPanel.Content = new ActiveOrdersEditor(store);
-        }
-
-        // 🔥 МАШИНЫ
-        private void ManageCars_Click(object sender, RoutedEventArgs e)
-        {
-            RightPanel.Content = new CarEditor(store);
-        }
-
-        // 🔥 ВОДИТЕЛИ
-        private void ManageDrivers_Click(object sender, RoutedEventArgs e)
-        {
-            RightPanel.Content = new DriverEditor(store);
-        }
-
-        // 🔥 ОЧИСТКА JSON
         private void ClearData_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show(
-                "Очистить ВСЕ данные?",
-                "Подтверждение",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            if (MessageBox.Show("Очистить весь JSON?", "Подтверждение", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                store.ClearAll();
+                store.Orders.Clear();
+                store.Cars.Clear();
+                store.Drivers.Clear();
+                store.Save();
+                MessageBox.Show("JSON очищен!");
+
+                // Очистка текущей панели и обновление вкладок
                 RightPanel.Content = null;
+                RefreshCreatedOrders();
             }
         }
 
-        // 🔥 ОБНОВЛЕНИЕ АКТИВНЫХ ЗАКАЗОВ
-        public void RefreshActiveOrders()
+        public void RefreshCreatedOrders()
         {
-            if (RightPanel.Content is ActiveOrdersEditor editor)
+            if (RightPanel.Content is CreatedOrdersEditor editor)
             {
                 editor.Refresh();
             }

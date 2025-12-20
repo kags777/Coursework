@@ -6,51 +6,56 @@ namespace Coursework
     public partial class CarEditor : UserControl
     {
         private DataStore store;
+        private MainWindow main;
 
-        public CarEditor(DataStore ds)
+        public CarEditor(DataStore ds, MainWindow mw)
         {
             InitializeComponent();
             store = ds;
-            Refresh();
+            main = mw;
+            RefreshCarList();
         }
 
-        private void Refresh()
+        private void RefreshCarList()
         {
-            CarList.ItemsSource = null;
-            CarList.ItemsSource = store.Cars;
+            CarListBox.ItemsSource = null;
+            CarListBox.ItemsSource = store.Cars;
         }
 
-        private void Add_Click(object sender, RoutedEventArgs e)
+        private void AddCar_Click(object sender, RoutedEventArgs e)
         {
-            var w = new CarWindow();
-            if (w.ShowDialog() == true)
+            CarWindow win = new CarWindow();
+            if (win.ShowDialog() == true)
             {
-                store.Cars.Add(w.Car);
+                store.Cars.Add(win.Car);
                 store.Save();
-                Refresh();
+                RefreshCarList();
             }
         }
 
-        private void Edit_Click(object sender, RoutedEventArgs e)
+        private void EditCar_Click(object sender, RoutedEventArgs e)
         {
-            if (CarList.SelectedItem is Car car)
+            if (CarListBox.SelectedItem is Car selected)
             {
-                var w = new CarWindow(car);
-                if (w.ShowDialog() == true)
+                CarWindow win = new CarWindow(selected);
+                if (win.ShowDialog() == true)
                 {
                     store.Save();
-                    Refresh();
+                    RefreshCarList();
                 }
             }
         }
 
-        private void Delete_Click(object sender, RoutedEventArgs e)
+        private void DeleteCar_Click(object sender, RoutedEventArgs e)
         {
-            if (CarList.SelectedItem is Car car)
+            if (CarListBox.SelectedItem is Car selected)
             {
-                store.Cars.Remove(car);
-                store.Save();
-                Refresh();
+                if (MessageBox.Show($"Удалить машину {selected.Number}?", "Подтверждение", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                {
+                    store.Cars.Remove(selected);
+                    store.Save();
+                    RefreshCarList();
+                }
             }
         }
     }

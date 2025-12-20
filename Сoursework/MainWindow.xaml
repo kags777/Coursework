@@ -4,23 +4,27 @@
         Title="Грузоперевозки" Height="600" Width="900">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <StackPanel Margin="10">
-            <Button Content="Создать заказ" Click="CreateOrder_Click"/>
-            <Button Content="Созданные заказы" Click="CreatedOrders_Click"/>
-            <Button Content="Активные заказы" Click="ActiveOrders_Click"/>
-            <Separator/>
-            <Button Content="Машины" Click="ManageCars_Click"/>
-            <Button Content="Водители" Click="ManageDrivers_Click"/>
-            <Separator/>
-            <Button Content="❌ Очистить JSON"
-                    Background="IndianRed"
-                    Click="ClearData_Click"/>
+        <!-- Левая панель кнопок -->
+        <StackPanel Grid.Column="0" Margin="5">
+            <Button Content="Создать заказ" Click="CreateOrder_Click" Margin="0,5"/>
+            <Button Content="Машины" Click="ManageCars_Click" Margin="0,5"/>
+            <Button Content="Водители" Click="ManageDrivers_Click" Margin="0,5"/>
+            <Button Content="Созданные заказы" Click="CreatedOrders_Click" Margin="0,5"/>
+            <Button Content="Очистить JSON"
+                    Click="ClearData_Click"
+                    Margin="0,20,0,0"
+                    Background="Red"
+                    Foreground="White"
+                    FontWeight="Bold"/>
         </StackPanel>
 
-        <ContentControl x:Name="RightPanel" Grid.Column="1"/>
+        <!-- Правая панель с прокруткой -->
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+            <ContentControl x:Name="RightPanel"/>
+        </ScrollViewer>
     </Grid>
 </Window>
