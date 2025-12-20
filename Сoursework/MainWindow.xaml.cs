@@ -39,9 +39,9 @@ namespace Coursework
 
         private void ActiveOrders_Click(object sender, RoutedEventArgs e)
         {
-            var editor = new ActiveOrdersEditor(store);
-            RightPanel.Content = editor;
+            RightPanel.Content = new ActiveOrdersEditor(store, this);
         }
+
 
         private void CompletedOrders_Click(object sender, RoutedEventArgs e)
         {
@@ -61,20 +61,19 @@ namespace Coursework
                 RightPanel.Content = null;
             }
         }
-        public void RefreshActiveOrders()
-        {
-            if (RightPanel.Content is ActiveOrdersEditor editor)
-            {
-                editor.Refresh();
-            }
-        }
-
         public void RefreshCreatedOrders()
         {
-            if (RightPanel.Content is CreatedOrdersEditor editor)
-            {
-                editor.Refresh();
-            }
+            RightPanel.Content = new CreatedOrdersEditor(store, this);
+        }
+
+        public void RefreshActiveOrders()
+        {
+            RightPanel.Content = new ActiveOrdersEditor(store, this);
+        }
+
+        public void RefreshCompletedOrders()
+        {
+            RightPanel.Content = new CompletedOrdersEditor(store);
         }
     }
 }

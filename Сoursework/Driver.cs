@@ -23,5 +23,12 @@ namespace Coursework
             }
             return true;
         }
+
+        public void FreePeriod(DateTime start, DateTime end)
+        {
+            BusyPeriods.RemoveAll(p =>
+                p.Item1 == start && p.Item2 == end);
+        }
+
     }
 }

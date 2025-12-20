@@ -30,6 +30,11 @@ namespace Coursework
         {
             Mileage += routeLength;
         }
+        public void FreePeriod(DateTime start, DateTime end)
+        {
+            BusyPeriods.RemoveAll(p =>
+                p.Item1 == start && p.Item2 == end);
+        }
 
     }
 }
