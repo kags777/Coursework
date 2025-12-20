@@ -15,7 +15,7 @@ namespace Coursework
             InitializeComponent();
             store = ds;
 
-            // показываем всех водителей и машины
+            // Заполняем списки с отображением ФИО водителя и номера машины
             DriverList.ItemsSource = store.Drivers;
             CarList.ItemsSource = store.Cars;
         }
