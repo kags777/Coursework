@@ -43,6 +43,12 @@ namespace Coursework
             RightPanel.Content = editor;
         }
 
+        private void CompletedOrders_Click(object sender, RoutedEventArgs e)
+        {
+            var editor = new CompletedOrdersEditor(store);
+            RightPanel.Content = editor;
+        }
+
         private void ClearData_Click(object sender, RoutedEventArgs e)
         {
             if (MessageBox.Show("Очистить весь JSON?", "Подтверждение", MessageBoxButton.YesNo) == MessageBoxResult.Yes)

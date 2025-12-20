@@ -28,7 +28,7 @@ namespace Coursework
             if (OrdersList.SelectedItem is Order order)
             {
                 order.Status = "Completed";
-                store.Save();
+                store.Save();   // сохраняем изменения
                 Refresh();
                 MessageBox.Show("Заказ завершён!");
             }

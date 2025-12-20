@@ -15,6 +15,7 @@
             <Button Content="Водители" Click="ManageDrivers_Click" Margin="0,5"/>
             <Button Content="Созданные заказы" Click="CreatedOrders_Click" Margin="0,5"/>
             <Button Content="Активные заказы" Click="ActiveOrders_Click" Margin="0,5"/>
+            <Button Content="Выполненные заказы" Click="CompletedOrders_Click" Margin="0,5"/>
             <Button Content="Очистить JSON"
                     Click="ClearData_Click"
                     Margin="0,20,0,0"

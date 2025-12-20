@@ -35,8 +35,11 @@ namespace Coursework
                     Height = 800,
                     Width = 400
                 };
-                win.ShowDialog();
-                Refresh();
+                if (win.ShowDialog() == true)
+                {
+                    store.Save(); // сохраняем изменения после редактирования
+                    Refresh();
+                }
             }
         }
 
