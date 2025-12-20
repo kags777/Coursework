@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using Microsoft.Win32;
 
 namespace Coursework
 {
@@ -23,6 +24,16 @@ namespace Coursework
                 YearRepairs.Text = car.YearRepairs.ToString();
                 Mileage.Text = car.Mileage.ToString();
                 Photo.Text = car.Photo;
+            }
+        }
+
+        private void SelectPhoto_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp";
+            if (dlg.ShowDialog() == true)
+            {
+                Photo.Text = dlg.FileName;
             }
         }
 

@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="Coursework.CarViewer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Height="500" Width="400">
+    <ScrollViewer>
+        <StackPanel Margin="10">
+            <TextBlock Text="Информация о машине" FontWeight="Bold" FontSize="16" Margin="0,0,0,10"/>
+            <Image x:Name="CarImage" Height="200" Stretch="Uniform" Margin="0,0,0,10"/>
+            <TextBlock x:Name="NumberText"/>
+            <TextBlock x:Name="BrandText"/>
+            <TextBlock x:Name="ModelText"/>
+            <TextBlock x:Name="MaxLoadText"/>
+            <TextBlock x:Name="AppointmentText"/>
+            <TextBlock x:Name="YearBornText"/>
+            <TextBlock x:Name="YearRepairsText"/>
+            <TextBlock x:Name="MileageText"/>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

@@ -40,7 +40,7 @@ namespace Coursework
                 CarWindow win = new CarWindow(selected);
                 if (win.ShowDialog() == true)
                 {
-                    store.Save();
+                    store.Save(); // Сохраняем изменения
                     RefreshCarList();
                 }
             }
@@ -56,6 +56,25 @@ namespace Coursework
                     store.Save();
                     RefreshCarList();
                 }
+            }
+        }
+
+        private void ViewCar_Click(object sender, RoutedEventArgs e)
+        {
+            if (CarListBox.SelectedItem is Car car)
+            {
+                Window win = new Window
+                {
+                    Title = $"Машина: {car.Number}",
+                    Content = new CarViewer(car),
+                    Height = 500,
+                    Width = 400
+                };
+                win.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Выберите машину для просмотра!");
             }
         }
     }

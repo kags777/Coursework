@@ -4,11 +4,13 @@
              Height="500" Width="350">
     <StackPanel Margin="10">
         <TextBlock Text="Список машин" FontWeight="Bold" Margin="0,0,0,5"/>
-        <ListBox x:Name="CarListBox" DisplayMemberPath="Number" Height="350"/>
+        <ListBox x:Name="CarListBox" DisplayMemberPath="Number" Height="300"/>
+
         <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-            <Button Content="Добавить" Click="AddCar_Click" Width="100"/>
-            <Button Content="Редактировать" Click="EditCar_Click" Width="100" Margin="5,0,0,0"/>
-            <Button Content="Удалить" Click="DeleteCar_Click" Width="100" Margin="5,0,0,0"/>
+            <Button Content="Добавить" Click="AddCar_Click" Width="80"/>
+            <Button Content="Редактировать" Click="EditCar_Click" Width="80" Margin="5,0,0,0"/>
+            <Button Content="Удалить" Click="DeleteCar_Click" Width="80" Margin="5,0,0,0"/>
+            <Button Content="Просмотр" Click="ViewCar_Click" Width="80" Margin="5,0,0,0"/>
         </StackPanel>
     </StackPanel>
 </UserControl>
