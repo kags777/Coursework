@@ -4,11 +4,11 @@
              Height="500" Width="350">
     <StackPanel Margin="10">
         <TextBlock Text="Созданные заказы" FontWeight="Bold" Margin="0,0,0,5"/>
-        <ListBox x:Name="OrdersList" DisplayMemberPath="ClientSender.NameClient" Height="400"/>
+        <ListBox x:Name="OrdersList" DisplayMemberPath="DisplayName" Height="400"/>
         <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
             <Button Content="Редактировать" Click="EditOrder_Click" Width="100"/>
             <Button Content="Удалить" Click="DeleteOrder_Click" Width="100" Margin="5,0,0,0"/>
-            <Button Content="Начать выполнение" Click="ActivateOrder_Click" Width="130" Margin="5,0,0,0"/>
+            <Button Content="Начать выполнение" Click="StartOrder_Click" Width="120" Margin="5,0,0,0"/>
         </StackPanel>
     </StackPanel>
 </UserControl>

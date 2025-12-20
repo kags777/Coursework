@@ -8,8 +8,8 @@
             <!-- Тип клиента -->
             <TextBlock Text="Тип клиента:" Margin="0,5,0,0"/>
             <ComboBox x:Name="ClientTypeComboBox" SelectedIndex="0">
-                <ComboBoxItem Content="Физическое"/>
-                <ComboBoxItem Content="Юридическое"/>
+                <ComboBoxItem Content="Физическое лицо"/>
+                <ComboBoxItem Content="Юридическое лицо"/>
             </ComboBox>
 
             <!-- Физическое лицо -->

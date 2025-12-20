@@ -19,7 +19,17 @@ namespace Coursework
 
         // Добавляем статус заказа
         public string Status { get; set; } = "Создан"; // Возможные значения: "Создан", "Активен", "Завершён"
-
+        public string DisplayName
+        {
+            get
+            {
+                if (ClientSender == null)
+                    return "(Нет клиента)";
+                return ClientSender.ClientType == "Физическое"
+                    ? ClientSender.NameClient
+                    : ClientSender.NameLegalEntity;
+            }
+        }
         public void CalcCost(int insuranceCost, bool fragileCargo, int routeLength)
         {
             if (fragileCargo) RiskCoefficient += 0.5f;

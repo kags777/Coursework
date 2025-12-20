@@ -27,19 +27,8 @@ namespace Coursework
         {
             if (OrdersList.SelectedItem is Order selected)
             {
-                OrderEditor editor = new OrderEditor(store, main, selected);
-                Window win = new Window
-                {
-                    Title = "Редактирование заказа",
-                    Content = editor,
-                    Height = 800,
-                    Width = 400
-                };
-                if (win.ShowDialog() == true)
-                {
-                    store.Save(); // сохраняем изменения после редактирования
-                    Refresh();
-                }
+                var editor = new OrderEditor(store, main, selected);
+                main.RightPanel.Content = editor;
             }
         }
 
@@ -47,7 +36,7 @@ namespace Coursework
         {
             if (OrdersList.SelectedItem is Order selected)
             {
-                if (MessageBox.Show("Удалить заказ?", "Подтверждение", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                if (MessageBox.Show($"Удалить заказ {selected.DisplayName}?", "Подтверждение", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                 {
                     store.Orders.Remove(selected);
                     store.Save();
@@ -56,14 +45,14 @@ namespace Coursework
             }
         }
 
-        private void ActivateOrder_Click(object sender, RoutedEventArgs e)
+        private void StartOrder_Click(object sender, RoutedEventArgs e)
         {
             if (OrdersList.SelectedItem is Order selected)
             {
-                selected.Status = "Active";
+                selected.Status = "Активен";
                 store.Save();
                 Refresh();
-                MessageBox.Show("Заказ отправлен на выполнение!");
+                main.RefreshActiveOrders(); // если в MainWindow есть метод для обновления активных заказов
             }
         }
     }

@@ -17,9 +17,8 @@ namespace Coursework
 
         public void Refresh()
         {
-            OrdersList.ItemsSource = null;
             OrdersList.ItemsSource = store.Orders
-                .Where(o => o.Status == "Active")
+                .Where(o => o.Status == "Активен")
                 .ToList();
         }
 
@@ -27,10 +26,9 @@ namespace Coursework
         {
             if (OrdersList.SelectedItem is Order order)
             {
-                order.Status = "Completed";
-                store.Save();   // сохраняем изменения
+                order.Status = "Завершён";
+                store.Save();
                 Refresh();
-                MessageBox.Show("Заказ завершён!");
             }
         }
     }

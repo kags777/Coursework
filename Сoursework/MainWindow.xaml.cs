@@ -61,6 +61,13 @@ namespace Coursework
                 RightPanel.Content = null;
             }
         }
+        public void RefreshActiveOrders()
+        {
+            if (RightPanel.Content is ActiveOrdersEditor editor)
+            {
+                editor.Refresh();
+            }
+        }
 
         public void RefreshCreatedOrders()
         {

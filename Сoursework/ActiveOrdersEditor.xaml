@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <StackPanel Margin="10">
         <TextBlock Text="Активные заказы" FontWeight="Bold" Margin="0,0,0,5"/>
-        <ListBox x:Name="OrdersList" DisplayMemberPath="ClientSender.NameClient" Height="400"/>
+        <ListBox x:Name="OrdersList" DisplayMemberPath="DisplayName"/>
         <Button Content="✔ Завершить заказ"
                 Margin="0,10,0,0"
                 Click="Complete_Click"/>
