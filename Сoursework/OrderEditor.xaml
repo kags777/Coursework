@@ -1,31 +1,35 @@
 ﻿<UserControl x:Class="Coursework.OrderEditor"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
     <StackPanel Margin="10">
+
         <TextBlock Text="Дата загрузки"/>
         <DatePicker SelectedDate="{Binding DateLoading}"/>
+
         <TextBlock Text="Дата выгрузки"/>
         <DatePicker SelectedDate="{Binding DateUnloading}"/>
-        <TextBlock Text="Отправитель"/>
-        <TextBox Text="{Binding ClientSender, Mode=TwoWay}"/>
+
         <TextBlock Text="Адрес загрузки"/>
-        <TextBox Text="{Binding LoadingAddress, Mode=TwoWay}"/>
-        <TextBlock Text="Получатель"/>
-        <TextBox Text="{Binding ClientRecipient, Mode=TwoWay}"/>
+        <TextBox Text="{Binding LoadingAddress}"/>
+
         <TextBlock Text="Адрес выгрузки"/>
-        <TextBox Text="{Binding UnloadingAddress, Mode=TwoWay}"/>
-        <TextBlock Text="Длина маршрута"/>
-        <TextBox Text="{Binding RouteLength, Mode=TwoWay}"/>
+        <TextBox Text="{Binding UnloadingAddress}"/>
+
+        <TextBlock Text="Длина маршрута (км)"/>
+        <TextBox Text="{Binding RouteLength}"/>
 
         <TextBlock Text="Грузы"/>
-        <Button Content="Добавить груз" Click="AddCargo_Click"/>
-        <ListBox ItemsSource="{Binding CargoList}"/>
+        <ListBox x:Name="CargoList" Height="100"/>
 
-        <TextBlock Text="Назначить машину"/>
-        <ComboBox x:Name="CarComboBox"/>
-        <TextBlock Text="Назначить водителя"/>
-        <ComboBox x:Name="DriverComboBox"/>
+        <!-- 🔥 ВОТ ЭТА КНОПКА -->
+        <Button Content="Добавить груз"
+                Margin="0,5,0,0"
+                Click="AddCargo_Click"/>
 
-        <Button Content="Сохранить" Click="Save_Click" Margin="0,20,0,0"/>
+        <Button Content="Сохранить заказ"
+                Margin="0,15,0,0"
+                Click="Save_Click"/>
+
     </StackPanel>
 </UserControl>

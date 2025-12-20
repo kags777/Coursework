@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -9,23 +8,58 @@ namespace Coursework
     {
         private const string FilePath = "data.json";
 
-        public List<Order> Orders { get; set; } = new List<Order>();
-        public List<Car> Cars { get; set; } = new List<Car>();
-        public List<Driver> Drivers { get; set; } = new List<Driver>();
+        public List<Order> Orders { get; set; }
+        public List<Car> Cars { get; set; }
+        public List<Driver> Drivers { get; set; }
+
+        public DataStore()
+        {
+            Orders = new List<Order>();
+            Cars = new List<Car>();
+            Drivers = new List<Driver>();
+        }
+
+        public void AddOrder(Order order)
+        {
+            Orders.Add(order);
+            Save();
+        }
+
+        public void AddCar(Car car)
+        {
+            Cars.Add(car);
+            Save();
+        }
+
+        public void AddDriver(Driver driver)
+        {
+            Drivers.Add(driver);
+            Save();
+        }
+
+        // 🔥 ВОТ ЕГО НЕ ХВАТАЛО
+        public void ClearAll()
+        {
+            Orders.Clear();
+            Cars.Clear();
+            Drivers.Clear();
+            Save();
+        }
 
         public void Load()
         {
-            if (File.Exists(FilePath))
-            {
-                string json = File.ReadAllText(FilePath);
-                var data = JsonConvert.DeserializeObject<DataStore>(json);
-                if (data != null)
-                {
-                    Orders = data.Orders ?? new List<Order>();
-                    Cars = data.Cars ?? new List<Car>();
-                    Drivers = data.Drivers ?? new List<Driver>();
-                }
-            }
+            if (!File.Exists(FilePath))
+                return;
+
+            string json = File.ReadAllText(FilePath);
+            DataStore data = JsonConvert.DeserializeObject<DataStore>(json);
+
+            if (data == null)
+                return;
+
+            Orders = data.Orders ?? new List<Order>();
+            Cars = data.Cars ?? new List<Car>();
+            Drivers = data.Drivers ?? new List<Driver>();
         }
 
         public void Save()
@@ -33,9 +67,5 @@ namespace Coursework
             string json = JsonConvert.SerializeObject(this, Formatting.Indented);
             File.WriteAllText(FilePath, json);
         }
-
-        public void AddOrder(Order o) => Orders.Add(o);
-        public void AddCar(Car c) => Cars.Add(c);
-        public void AddDriver(Driver d) => Drivers.Add(d);
     }
 }

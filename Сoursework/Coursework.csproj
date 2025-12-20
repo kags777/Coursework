@@ -73,6 +73,9 @@
     <Compile Include="ClientWindow.xaml.cs">
       <DependentUpon>ClientWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CreatedOrdersEditor.xaml.cs">
+      <DependentUpon>CreatedOrdersEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DataStore.cs" />
     <Compile Include="DriverEditor.xaml.cs">
       <DependentUpon>DriverEditor.xaml</DependentUpon>
@@ -102,6 +105,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ClientWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CreatedOrdersEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

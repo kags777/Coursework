@@ -4,31 +4,34 @@ using System.Windows.Controls;
 
 namespace Coursework
 {
-    public partial class ActiveOrdersEditor : UserControl
+    public partial class CreatedOrdersEditor : UserControl
     {
         private DataStore store;
+        private MainWindow main;
 
-        public ActiveOrdersEditor(DataStore ds)
+        public CreatedOrdersEditor(DataStore ds, MainWindow mw)
         {
             InitializeComponent();
             store = ds;
+            main = mw;
             Refresh();
         }
 
-        public void Refresh()
+        private void Refresh()
         {
             OrdersList.ItemsSource = store.Orders
-                .Where(o => o.Status == "Active")
+                .Where(o => o.Status == "Created")
                 .ToList();
         }
 
-        private void Complete_Click(object sender, RoutedEventArgs e)
+        private void Activate_Click(object sender, RoutedEventArgs e)
         {
             if (OrdersList.SelectedItem is Order order)
             {
-                order.Status = "Completed";
+                order.Status = "Active";
                 store.Save();
                 Refresh();
+                main.RefreshActiveOrders();
             }
         }
     }

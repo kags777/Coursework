@@ -7,28 +7,51 @@ namespace Coursework
     {
         private DataStore store;
 
-        public CarEditor(DataStore dataStore)
+        public CarEditor(DataStore ds)
         {
             InitializeComponent();
-            store = dataStore;
+            store = ds;
             Refresh();
         }
 
-        private void AddCar_Click(object sender, RoutedEventArgs e)
+        private void Refresh()
         {
-            var window = new CarWindow();
-            if (window.ShowDialog() == true)
+            CarList.ItemsSource = null;
+            CarList.ItemsSource = store.Cars;
+        }
+
+        private void Add_Click(object sender, RoutedEventArgs e)
+        {
+            var w = new CarWindow();
+            if (w.ShowDialog() == true)
             {
-                store.AddCar(window.Car);
+                store.Cars.Add(w.Car);
+                store.Save();
                 Refresh();
             }
         }
 
-        public void Refresh()
+        private void Edit_Click(object sender, RoutedEventArgs e)
         {
-            CarList.ItemsSource = null;
-            CarList.ItemsSource = store.Cars;
-            CarList.DisplayMemberPath = "Number";
+            if (CarList.SelectedItem is Car car)
+            {
+                var w = new CarWindow(car);
+                if (w.ShowDialog() == true)
+                {
+                    store.Save();
+                    Refresh();
+                }
+            }
+        }
+
+        private void Delete_Click(object sender, RoutedEventArgs e)
+        {
+            if (CarList.SelectedItem is Car car)
+            {
+                store.Cars.Remove(car);
+                store.Save();
+                Refresh();
+            }
         }
     }
 }

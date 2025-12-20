@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace Coursework
@@ -9,61 +6,50 @@ namespace Coursework
     public partial class OrderEditor : UserControl
     {
         private DataStore store;
-        public ObservableCollection<Cargo> CargoList { get; set; } = new ObservableCollection<Cargo>();
+        private MainWindow main;
+        private Order order;
 
-        public OrderEditor(DataStore store)
+        public OrderEditor(DataStore ds, MainWindow mw)
         {
             InitializeComponent();
-            this.store = store;
-            DataContext = new Order();
+            store = ds;
+            main = mw;
 
-            CarComboBox.ItemsSource = store.Cars;
-            CarComboBox.DisplayMemberPath = "Number";
-            DriverComboBox.ItemsSource = store.Drivers;
-            DriverComboBox.DisplayMemberPath = "NameDriver";
+            order = new Order();
+            DataContext = order;
+
+            RefreshCargo();
         }
 
-        private void SetClient_Click(object sender, RoutedEventArgs e)
-        {
-            var window = new ClientWindow();
-            if (window.ShowDialog() == true)
-            {
-                var order = DataContext as Order;
-                order.Client = window.Client;
-            }
-        }
-
+        // 🔥 ВОТ ЕГО НЕ ХВАТАЛО
         private void AddCargo_Click(object sender, RoutedEventArgs e)
         {
-            var window = new CargoWindow();
-            if (window.ShowDialog() == true)
+            // пока простой тестовый груз
+            Cargo cargo = new Cargo
             {
-                CargoList.Add(window.Cargo);
-            }
+                Nomination = "Тестовый груз",
+                Quantity = 1,
+                Weight = 100,
+                Cost = 10000,
+                FragileCargo = false
+            };
+
+            order.Loads.Add(cargo);
+            RefreshCargo();
+        }
+
+        private void RefreshCargo()
+        {
+            CargoList.ItemsSource = null;
+            CargoList.ItemsSource = order.Loads;
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            var order = DataContext as Order;
-            if (order != null)
-            {
-                order.Loads = CargoList.ToList();
-                order.AssignedCar = CarComboBox.SelectedItem as Car;
-                order.AssignedDriver = DriverComboBox.SelectedItem as Driver;
+            store.AddOrder(order);
+            MessageBox.Show("Заказ создан");
 
-                if (order.AssignedCar != null)
-                    order.AssignedCar.BusyPeriods.Add(Tuple.Create(order.DateLoading, order.DateUnloading));
-                if (order.AssignedDriver != null)
-                    order.AssignedDriver.BusyPeriods.Add(Tuple.Create(order.DateLoading, order.DateUnloading));
-
-                store.AddOrder(order);
-                store.Save();
-
-                if (Application.Current.MainWindow is MainWindow main)
-                    main.RefreshActiveOrders();
-
-                MessageBox.Show("Заказ сохранён!");
-            }
+            main.RefreshActiveOrders();
         }
     }
 }
