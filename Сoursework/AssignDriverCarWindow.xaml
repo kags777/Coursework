@@ -1,0 +1,14 @@
+﻿<Window x:Class="Coursework.AssignDriverCarWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Назначить машину и водителя" Height="300" Width="400">
+    <StackPanel Margin="10">
+        <TextBlock Text="Выберите водителя:"/>
+        <ListBox x:Name="DriverList" Height="100"/>
+
+        <TextBlock Text="Выберите машину:" Margin="0,10,0,0"/>
+        <ListBox x:Name="CarList" Height="100"/>
+
+        <Button Content="Назначить" Click="Assign_Click" Margin="0,10,0,0"/>
+    </StackPanel>
+</Window>

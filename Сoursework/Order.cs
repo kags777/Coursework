@@ -1,42 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Coursework
 {
-    public class Order
+    public class Order : IOrderServ
     {
-        public DateTime DateLoading { get; set; }
-        public DateTime DateUnloading { get; set; }
-
-        public Client Client { get; set; }
-
+        public Client ClientSender { get; set; }
         public string LoadingAddress { get; set; }
         public string UnloadingAddress { get; set; }
-
         public float RouteLength { get; set; }
-
-        // 🔥 ВОТ ОНО
-        public List<Cargo> Loads { get; set; }
-
-        public Car AssignedCar { get; set; }
-        public Driver AssignedDriver { get; set; }
-
-        // Created / Active / Completed
-        public string Status { get; set; }
-
         public float Cost { get; set; }
+        public List<Cargo> Loads { get; set; } = new List<Cargo>();
 
-        public Order()
-        {
-            Loads = new List<Cargo>();
-            Status = "Created";
-        }
+        public Driver AssignedDriver { get; set; }
+        public Car AssignedCar { get; set; }
 
-        public override string ToString()
+        public int BaseRate = 15000;
+        public float RiskCoefficient = 1.0f;
+
+        // Добавляем статус заказа
+        public string Status { get; set; } = "Создан"; // Возможные значения: "Создан", "Активен", "Завершён"
+
+        public void CalcCost(int insuranceCost, bool fragileCargo, int routeLength)
         {
-            return Status + " | " +
-                   DateLoading.ToShortDateString() + " → " +
-                   DateUnloading.ToShortDateString();
+            if (fragileCargo) RiskCoefficient += 0.5f;
+            if (routeLength > 1000) RiskCoefficient += 0.2f;
+            Cost = (BaseRate * routeLength) + (insuranceCost * RiskCoefficient);
         }
     }
 }

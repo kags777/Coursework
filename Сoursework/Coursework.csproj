@@ -61,6 +61,9 @@
     <Compile Include="ActiveOrdersEditor.xaml.cs">
       <DependentUpon>ActiveOrdersEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="AssignDriverCarWindow.xaml.cs">
+      <DependentUpon>AssignDriverCarWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="CarEditor.xaml.cs">
       <DependentUpon>CarEditor.xaml</DependentUpon>
     </Compile>
@@ -89,6 +92,10 @@
     </Compile>
     <Compile Include="Trip.cs" />
     <Page Include="ActiveOrdersEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="AssignDriverCarWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

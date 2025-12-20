@@ -15,40 +15,76 @@ namespace Coursework
             store = ds;
             main = mw;
 
-            order = new Order();
-            DataContext = order;
-
-            RefreshCargo();
-        }
-
-        // 🔥 ВОТ ЕГО НЕ ХВАТАЛО
-        private void AddCargo_Click(object sender, RoutedEventArgs e)
-        {
-            // пока простой тестовый груз
-            Cargo cargo = new Cargo
+            // Создаём новый заказ с пустым клиентом и списком грузов
+            order = new Order
             {
-                Nomination = "Тестовый груз",
-                Quantity = 1,
-                Weight = 100,
-                Cost = 10000,
-                FragileCargo = false
+                Loads = new System.Collections.Generic.List<Cargo>(),
+                ClientSender = new Client()
             };
 
-            order.Loads.Add(cargo);
             RefreshCargo();
         }
 
+        // Добавление груза
+        private void AddCargo_Click(object sender, RoutedEventArgs e)
+        {
+            CargoWindow win = new CargoWindow();
+            if (win.ShowDialog() == true)
+            {
+                Cargo cargo = win.Cargo;
+                order.Loads.Add(cargo);
+                RefreshCargo();
+            }
+        }
+
+        // Обновление списка грузов
         private void RefreshCargo()
         {
             CargoList.ItemsSource = null;
             CargoList.ItemsSource = order.Loads;
         }
 
+        // Сохранение заказа
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            store.AddOrder(order);
-            MessageBox.Show("Заказ создан");
+            // Заполняем информацию о клиенте
+            Client client = new Client();
+            if (ClientType.SelectedIndex == 0) // Физическое лицо
+            {
+                client.ClientType = "Физическое";
+                client.NameClient = NameClient.Text;
+                client.PhoneClient = PhoneClient.Text;
+                client.Passport = PassportOrTIN.Text;
+            }
+            else // Юридическое лицо
+            {
+                client.ClientType = "Юридическое";
+                client.NameLegalEntity = NameClient.Text;
+                client.LeaderName = LeaderOrBank.Text;
+                client.LegalAddress = AddressOrAccount.Text;
+                client.LegalPhoneNumber = PhoneClient.Text;
+                client.Bank = LeaderOrBank.Text;
+                client.BankAccountNumber = AddressOrAccount.Text;
+                client.TIN = PassportOrTIN.Text;
+            }
 
+            order.ClientSender = client;
+
+            // Адреса и маршрут
+            order.LoadingAddress = LoadingAddress.Text;
+            order.UnloadingAddress = UnloadingAddress.Text;
+            order.RouteLength = float.TryParse(RouteLength.Text, out var len) ? len : 0;
+
+            // Выбор водителя и машины
+            AssignDriverCarWindow assignWin = new AssignDriverCarWindow(store);
+            if (assignWin.ShowDialog() == true)
+            {
+                order.AssignedDriver = assignWin.SelectedDriver;
+                order.AssignedCar = assignWin.SelectedCar;
+            }
+
+            store.AddOrder(order); // Сохраняем в DataStore
+            MessageBox.Show("Заказ создан!");
             main.RefreshActiveOrders();
         }
     }

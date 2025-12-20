@@ -7,28 +7,49 @@ namespace Coursework
     {
         private DataStore store;
 
-        public DriverEditor(DataStore dataStore)
+        public DriverEditor(DataStore ds)
         {
             InitializeComponent();
-            store = dataStore;
-            Refresh();
+            store = ds;
+            RefreshDrivers();
+        }
+
+        private void RefreshDrivers()
+        {
+            DriverList.ItemsSource = null;
+            DriverList.ItemsSource = store.Drivers;
         }
 
         private void AddDriver_Click(object sender, RoutedEventArgs e)
         {
-            var window = new DriverWindow();
-            if (window.ShowDialog() == true)
+            DriverWindow win = new DriverWindow();
+            if (win.ShowDialog() == true)
             {
-                store.AddDriver(window.Driver);
-                Refresh();
+                store.AddDriver(win.Driver);
+                RefreshDrivers();
             }
         }
 
-        public void Refresh()
+        private void EditDriver_Click(object sender, RoutedEventArgs e)
         {
-            DriverList.ItemsSource = null;
-            DriverList.ItemsSource = store.Drivers;
-            DriverList.DisplayMemberPath = "NameDriver";
+            if (DriverList.SelectedItem is Driver driver)
+            {
+                DriverWindow win = new DriverWindow(driver);
+                if (win.ShowDialog() == true)
+                {
+                    RefreshDrivers();
+                }
+            }
+        }
+
+        private void DeleteDriver_Click(object sender, RoutedEventArgs e)
+        {
+            if (DriverList.SelectedItem is Driver driver)
+            {
+                store.Drivers.Remove(driver);
+                store.Save();
+                RefreshDrivers();
+            }
         }
     }
 }
