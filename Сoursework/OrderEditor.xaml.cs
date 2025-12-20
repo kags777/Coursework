@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -6,17 +6,19 @@ namespace Coursework
 {
     public partial class OrderEditor : UserControl
     {
-        private DataStore store;
-        private MainWindow main;
+        private readonly DataStore store;
+        private readonly MainWindow main;
         private Order order;
-        private bool isEditing = false;
+        private bool isEditing;
 
-        // Если передан существующий заказ → редактирование
         public OrderEditor(DataStore ds, MainWindow mw, Order existingOrder = null)
         {
             InitializeComponent();
             store = ds;
             main = mw;
+
+            StartDatePicker.SelectedDate = DateTime.Now;
+            EndDatePicker.SelectedDate = DateTime.Now.AddDays(1);
 
             if (existingOrder != null)
             {
@@ -28,25 +30,27 @@ namespace Coursework
             {
                 order = new Order
                 {
-                    Loads = new System.Collections.Generic.List<Cargo>(),
-                    ClientSender = new Client()
+                    ClientSender = new Client(),
+                    Loads = new System.Collections.Generic.List<Cargo>()
                 };
+                ClientTypeComboBox.SelectedIndex = 0;
             }
 
             RefreshCargo();
         }
 
+        private void ClientTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            PhysicalPanel.Visibility =
+                ClientTypeComboBox.SelectedIndex == 0 ? Visibility.Visible : Visibility.Collapsed;
+
+            LegalPanel.Visibility =
+                ClientTypeComboBox.SelectedIndex == 1 ? Visibility.Visible : Visibility.Collapsed;
+        }
+
         private void LoadOrderToUI()
         {
-            // Клиент
-            if (order.ClientSender.ClientType == "Физическое")
-            {
-                ClientTypeComboBox.SelectedIndex = 0;
-                NameClientBox.Text = order.ClientSender.NameClient;
-                PhoneClientBox.Text = order.ClientSender.PhoneClient;
-                PassportBox.Text = order.ClientSender.Passport;
-            }
-            else
+            if (order.ClientSender.ClientType == "Юридическое")
             {
                 ClientTypeComboBox.SelectedIndex = 1;
                 LegalNameBox.Text = order.ClientSender.NameLegalEntity;
@@ -57,13 +61,25 @@ namespace Coursework
                 BankAccountBox.Text = order.ClientSender.BankAccountNumber;
                 TINBox.Text = order.ClientSender.TIN;
             }
+            else
+            {
+                ClientTypeComboBox.SelectedIndex = 0;
+                NameClientBox.Text = order.ClientSender.NameClient;
+                PhoneClientBox.Text = order.ClientSender.PhoneClient;
+                PassportBox.Text = order.ClientSender.Passport;
+            }
 
             LoadingAddressBox.Text = order.LoadingAddress;
             UnloadingAddressBox.Text = order.UnloadingAddress;
             RouteLengthBox.Text = order.RouteLength.ToString();
 
-            // Водитель и машина
-            // Для простоты можно просто показывать имя выбранного водителя/машины, если нужно, можно сделать отдельное поле
+            StartDatePicker.SelectedDate = order.StartDate == default
+                ? DateTime.Now
+                : order.StartDate;
+
+            EndDatePicker.SelectedDate = order.EndDate == default
+                ? DateTime.Now.AddDays(1)
+                : order.EndDate;
         }
 
         private void AddCargo_Click(object sender, RoutedEventArgs e)
@@ -84,7 +100,17 @@ namespace Coursework
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
+            DateTime start = StartDatePicker.SelectedDate ?? DateTime.Now;
+            DateTime end = EndDatePicker.SelectedDate ?? DateTime.Now.AddDays(1);
+
+            if (end <= start)
+            {
+                MessageBox.Show("Дата окончания должна быть позже даты начала");
+                return;
+            }
+
             Client client = new Client();
+
             if (ClientTypeComboBox.SelectedIndex == 0)
             {
                 client.ClientType = "Физическое";
@@ -108,30 +134,50 @@ namespace Coursework
             order.LoadingAddress = LoadingAddressBox.Text;
             order.UnloadingAddress = UnloadingAddressBox.Text;
             order.RouteLength = float.TryParse(RouteLengthBox.Text, out var len) ? len : 0;
+            order.StartDate = start;
+            order.EndDate = end;
 
-            // Назначение водителя и машины (по желанию)
-            AssignDriverCarWindow assignWin = new AssignDriverCarWindow(store);
+            AssignDriverCarWindow assignWin =
+                new AssignDriverCarWindow(store, start, end);
+
             if (assignWin.ShowDialog() == true)
             {
                 order.AssignedDriver = assignWin.SelectedDriver;
                 order.AssignedCar = assignWin.SelectedCar;
             }
 
-            // Статус
-            if (!isEditing)
-                order.Status = "Создан";
+            if (order.AssignedDriver != null &&
+                !order.AssignedDriver.IsAvailable(start, end))
+            {
+                MessageBox.Show("Водитель занят");
+                return;
+            }
+
+            if (order.AssignedCar != null &&
+                !order.AssignedCar.IsAvailable(start, end))
+            {
+                MessageBox.Show("Машина занята");
+                return;
+            }
+
+            if (order.AssignedDriver != null)
+                order.AssignedDriver.BusyPeriods.Add(Tuple.Create(start, end));
+
+            if (order.AssignedCar != null)
+                order.AssignedCar.BusyPeriods.Add(Tuple.Create(start, end));
 
             if (!isEditing)
             {
-                store.AddOrder(order); // добавляем новый заказ
+                order.Status = "Создан";
+                store.AddOrder(order);
             }
             else
             {
-                store.Save(); // сохраняем изменения существующего заказа
+                store.Save();
             }
 
             main.RefreshCreatedOrders();
-            MessageBox.Show(isEditing ? "Заказ обновлён!" : "Заказ создан!");
+            MessageBox.Show("Заказ сохранён");
         }
     }
 }

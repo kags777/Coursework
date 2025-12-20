@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Coursework
 {
@@ -10,7 +11,8 @@ namespace Coursework
         public float RouteLength { get; set; }
         public float Cost { get; set; }
         public List<Cargo> Loads { get; set; } = new List<Cargo>();
-
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public Driver AssignedDriver { get; set; }
         public Car AssignedCar { get; set; }
 
@@ -35,6 +37,10 @@ namespace Coursework
             if (fragileCargo) RiskCoefficient += 0.5f;
             if (routeLength > 1000) RiskCoefficient += 0.2f;
             Cost = (BaseRate * routeLength) + (insuranceCost * RiskCoefficient);
+        }
+        public bool IsAvailable(Driver driver, Car car)
+        {
+            return driver.IsAvailable(StartDate, EndDate) && car.IsAvailable(StartDate, EndDate);
         }
     }
 }
