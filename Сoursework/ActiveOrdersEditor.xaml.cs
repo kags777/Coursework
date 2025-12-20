@@ -17,6 +17,7 @@ namespace Coursework
 
         public void Refresh()
         {
+            OrdersList.ItemsSource = null;
             OrdersList.ItemsSource = store.Orders
                 .Where(o => o.Status == "Active")
                 .ToList();
@@ -29,6 +30,7 @@ namespace Coursework
                 order.Status = "Completed";
                 store.Save();
                 Refresh();
+                MessageBox.Show("Заказ завершён!");
             }
         }
     }

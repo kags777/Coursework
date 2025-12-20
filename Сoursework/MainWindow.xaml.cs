@@ -37,6 +37,12 @@ namespace Coursework
             RightPanel.Content = editor;
         }
 
+        private void ActiveOrders_Click(object sender, RoutedEventArgs e)
+        {
+            var editor = new ActiveOrdersEditor(store);
+            RightPanel.Content = editor;
+        }
+
         private void ClearData_Click(object sender, RoutedEventArgs e)
         {
             if (MessageBox.Show("Очистить весь JSON?", "Подтверждение", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
@@ -46,10 +52,7 @@ namespace Coursework
                 store.Drivers.Clear();
                 store.Save();
                 MessageBox.Show("JSON очищен!");
-
-                // Очистка текущей панели и обновление вкладок
                 RightPanel.Content = null;
-                RefreshCreatedOrders();
             }
         }
 

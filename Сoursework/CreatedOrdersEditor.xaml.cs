@@ -28,8 +28,6 @@ namespace Coursework
             if (OrdersList.SelectedItem is Order selected)
             {
                 OrderEditor editor = new OrderEditor(store, main, selected);
-                // Можно открыть в отдельном окне или заменить контент
-                // Для простоты откроем как окно:
                 Window win = new Window
                 {
                     Title = "Редактирование заказа",
