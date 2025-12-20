@@ -21,7 +21,7 @@ namespace Coursework
         {
             OrdersList.ItemsSource = null;
             OrdersList.ItemsSource = store.Orders
-                .Where(o => o.Status == "Активен")
+                .Where(o => o.Status == OrderStatus.Active)
                 .ToList();
         }
 
@@ -36,18 +36,13 @@ namespace Coursework
 
             // освобождаем водителя
             if (order.AssignedDriver != null)
-            {
                 order.AssignedDriver.FreePeriod(order.StartDate, order.EndDate);
-            }
 
             // освобождаем машину
             if (order.AssignedCar != null)
-            {
                 order.AssignedCar.FreePeriod(order.StartDate, order.EndDate);
-            }
 
-            // меняем статус
-            order.Status = "Выполнен";
+            order.Status = OrderStatus.Completed;
 
             store.Save();
 

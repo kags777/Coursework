@@ -96,6 +96,7 @@
     <Compile Include="OrderEditor.xaml.cs">
       <DependentUpon>OrderEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OrderStatus.cs" />
     <Compile Include="Trip.cs" />
     <Page Include="ActiveOrdersEditor.xaml">
       <SubType>Designer</SubType>

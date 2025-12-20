@@ -18,7 +18,7 @@ namespace Coursework
         {
             OrdersList.ItemsSource = null;
             OrdersList.ItemsSource = store.Orders
-                .Where(o => o.Status == "Completed")
+                .Where(o => o.Status == OrderStatus.Completed)
                 .ToList();
         }
     }
