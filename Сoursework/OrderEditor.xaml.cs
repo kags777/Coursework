@@ -210,5 +210,18 @@ namespace Coursework
                 "Информация"
             );
         }
+
+        private void ReceiverTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ReceiverPhysicalPanel.Visibility =
+                ReceiverTypeComboBox.SelectedIndex == 0
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+
+            ReceiverLegalPanel.Visibility =
+                ReceiverTypeComboBox.SelectedIndex == 1
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
+        }
     }
 }

@@ -6,7 +6,8 @@
     <ScrollViewer>
         <StackPanel Margin="10">
 
-            <!-- Тип клиента -->
+            <!-- ================= ОТПРАВИТЕЛЬ ================= -->
+
             <TextBlock Text="Тип клиента"/>
             <ComboBox x:Name="ClientTypeComboBox"
                       SelectionChanged="ClientTypeComboBox_SelectionChanged">
@@ -18,8 +19,10 @@
             <StackPanel x:Name="PhysicalPanel">
                 <TextBlock Text="ФИО"/>
                 <TextBox x:Name="NameClientBox"/>
+
                 <TextBlock Text="Телефон"/>
                 <TextBox x:Name="PhoneClientBox"/>
+
                 <TextBlock Text="Паспорт"/>
                 <TextBox x:Name="PassportBox"/>
             </StackPanel>
@@ -28,42 +31,90 @@
             <StackPanel x:Name="LegalPanel" Visibility="Collapsed">
                 <TextBlock Text="Название организации"/>
                 <TextBox x:Name="LegalNameBox"/>
+
                 <TextBlock Text="ФИО руководителя"/>
                 <TextBox x:Name="LeaderNameBox"/>
+
                 <TextBlock Text="Юридический адрес"/>
                 <TextBox x:Name="LegalAddressBox"/>
+
                 <TextBlock Text="Телефон"/>
                 <TextBox x:Name="LegalPhoneBox"/>
+
                 <TextBlock Text="Банк"/>
                 <TextBox x:Name="BankBox"/>
+
                 <TextBlock Text="Расчетный счет"/>
                 <TextBox x:Name="BankAccountBox"/>
+
                 <TextBlock Text="ИНН"/>
                 <TextBox x:Name="TINBox"/>
             </StackPanel>
 
-            <!-- Маршрут -->
+            <!-- ================= ПОЛУЧАТЕЛЬ ================= -->
+
+            <TextBlock Text="Клиент-получатель"
+                       FontWeight="Bold"
+                       Margin="0,15,0,5"/>
+
+            <TextBlock Text="Тип получателя"/>
+            <ComboBox x:Name="ReceiverTypeComboBox"
+                      SelectionChanged="ReceiverTypeComboBox_SelectionChanged">
+                <ComboBoxItem Content="Физическое"/>
+                <ComboBoxItem Content="Юридическое"/>
+            </ComboBox>
+
+            <!-- Физическое лицо -->
+            <StackPanel x:Name="ReceiverPhysicalPanel">
+                <TextBlock Text="ФИО получателя"/>
+                <TextBox x:Name="ReceiverNameBox"/>
+
+                <TextBlock Text="Телефон получателя"/>
+                <TextBox x:Name="ReceiverPhoneBox"/>
+            </StackPanel>
+
+            <!-- Юридическое лицо -->
+            <StackPanel x:Name="ReceiverLegalPanel" Visibility="Collapsed">
+                <TextBlock Text="Название организации"/>
+                <TextBox x:Name="ReceiverLegalNameBox"/>
+
+                <TextBlock Text="ИНН"/>
+                <TextBox x:Name="ReceiverTINBox"/>
+            </StackPanel>
+
+            <!-- ================= МАРШРУТ ================= -->
+
             <TextBlock Text="Адрес загрузки"/>
             <TextBox x:Name="LoadingAddressBox"/>
+
             <TextBlock Text="Адрес выгрузки"/>
             <TextBox x:Name="UnloadingAddressBox"/>
+
             <TextBlock Text="Длина маршрута (км)"/>
             <TextBox x:Name="RouteLengthBox"/>
 
-            <!-- Даты -->
+            <!-- ================= ДАТЫ ================= -->
+
             <TextBlock Text="Дата начала"/>
             <DatePicker x:Name="StartDatePicker"/>
+
             <TextBlock Text="Дата окончания"/>
             <DatePicker x:Name="EndDatePicker"/>
 
-            <!-- Грузы -->
+            <!-- ================= ГРУЗЫ ================= -->
+
             <TextBlock Text="Грузы"/>
-            <ListBox x:Name="CargoListBox" Height="120" DisplayMemberPath="Nomination"/>
-            <Button Content="Добавить груз" Click="AddCargo_Click"/>
+            <ListBox x:Name="CargoListBox"
+                     Height="120"
+                     DisplayMemberPath="Nomination"/>
+
+            <Button Content="Добавить груз"
+                    Click="AddCargo_Click"/>
 
             <Button Content="Сохранить заказ"
                     Margin="0,10,0,0"
                     Click="Save_Click"/>
+
         </StackPanel>
     </ScrollViewer>
 </UserControl>

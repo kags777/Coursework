@@ -5,6 +5,7 @@ namespace Coursework
     public class Order : IOrderServ
     {
         public Client ClientSender { get; set; }
+        public Client ClientReceiver { get; set; }
 
         public string LoadingAddress { get; set; }
         public string UnloadingAddress { get; set; }
@@ -20,7 +21,7 @@ namespace Coursework
         public System.DateTime StartDate { get; set; }
         public System.DateTime EndDate { get; set; }
 
-        public int BaseRate = 15000;
+        public int BaseRate = 1500;
         public float RiskCoefficient = 1.0f;
 
         public string Status { get; set; } = OrderStatus.Created;
