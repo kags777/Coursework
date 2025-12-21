@@ -16,7 +16,7 @@ namespace Coursework
             RefreshCarList();
         }
 
-        private void RefreshCarList()
+        public void RefreshCarList()
         {
             CarListBox.ItemsSource = null;
             CarListBox.ItemsSource = store.Cars;

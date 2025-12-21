@@ -1,11 +1,12 @@
 ﻿<UserControl x:Class="Coursework.ActiveOrdersEditor"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Height="Auto" Width="Auto">
     <StackPanel Margin="10">
         <TextBlock Text="Активные заказы" FontWeight="Bold" Margin="0,0,0,5"/>
-        <ListBox x:Name="OrdersList" DisplayMemberPath="DisplayName"/>
+        <ListBox x:Name="OrdersList" DisplayMemberPath="DisplayName" Height="200"/>
         <Button Content="✔ Завершить заказ"
                 Margin="0,10,0,0"
-                Click="Complete_Click"/>
+                Click="CompleteOrder_Click"/>
     </StackPanel>
 </UserControl>

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -31,7 +33,8 @@ namespace Coursework
                 order = new Order
                 {
                     ClientSender = new Client(),
-                    Loads = new System.Collections.Generic.List<Cargo>()
+                    Loads = new List<Cargo>(),
+                    Status = OrderStatus.Created
                 };
                 ClientTypeComboBox.SelectedIndex = 0;
             }
@@ -73,13 +76,11 @@ namespace Coursework
             UnloadingAddressBox.Text = order.UnloadingAddress;
             RouteLengthBox.Text = order.RouteLength.ToString();
 
-            StartDatePicker.SelectedDate = order.StartDate == default
-                ? DateTime.Now
-                : order.StartDate;
+            StartDatePicker.SelectedDate =
+                order.StartDate == default ? DateTime.Now : order.StartDate;
 
-            EndDatePicker.SelectedDate = order.EndDate == default
-                ? DateTime.Now.AddDays(1)
-                : order.EndDate;
+            EndDatePicker.SelectedDate =
+                order.EndDate == default ? DateTime.Now.AddDays(1) : order.EndDate;
         }
 
         private void AddCargo_Click(object sender, RoutedEventArgs e)
@@ -109,6 +110,7 @@ namespace Coursework
                 return;
             }
 
+            // ===== Клиент =====
             Client client = new Client();
 
             if (ClientTypeComboBox.SelectedIndex == 0)
@@ -137,6 +139,7 @@ namespace Coursework
             order.StartDate = start;
             order.EndDate = end;
 
+            // ===== Назначение водителя и машины =====
             AssignDriverCarWindow assignWin =
                 new AssignDriverCarWindow(store, start, end);
 
@@ -149,26 +152,48 @@ namespace Coursework
             if (order.AssignedDriver != null &&
                 !order.AssignedDriver.IsAvailable(start, end))
             {
-                MessageBox.Show("Водитель занят");
+                MessageBox.Show("Выбранный водитель занят");
                 return;
             }
 
             if (order.AssignedCar != null &&
                 !order.AssignedCar.IsAvailable(start, end))
             {
-                MessageBox.Show("Машина занята");
+                MessageBox.Show("Выбранная машина занята");
                 return;
             }
 
+            // ===== Блокировка =====
             if (order.AssignedDriver != null)
                 order.AssignedDriver.BusyPeriods.Add(Tuple.Create(start, end));
 
             if (order.AssignedCar != null)
                 order.AssignedCar.BusyPeriods.Add(Tuple.Create(start, end));
 
+            // ===== СТРАХОВКА =====
+            int totalInsurance = 0;
+            bool fragileCargo = false;
+
+            foreach (var cargo in order.Loads)
+            {
+                cargo.CalcInsurance();
+                totalInsurance += cargo.InsuranceCost;
+
+                if (cargo.FragileCargo)
+                    fragileCargo = true;
+            }
+
+            // ===== СТОИМОСТЬ ЗАКАЗА =====
+            order.CalcCost(
+                totalInsurance,
+                fragileCargo,
+                (int)order.RouteLength
+            );
+
+            // ===== Сохранение =====
             if (!isEditing)
             {
-                order.Status = "Создан";
+                order.Status = OrderStatus.Created;
                 store.AddOrder(order);
             }
             else
@@ -177,7 +202,13 @@ namespace Coursework
             }
 
             main.RefreshCreatedOrders();
-            MessageBox.Show("Заказ сохранён");
+
+            MessageBox.Show(
+                $"Заказ сохранён!\n\n" +
+                $"Страховка: {totalInsurance} ₽\n" +
+                $"Стоимость заказа: {order.Cost} ₽",
+                "Информация"
+            );
         }
     }
 }

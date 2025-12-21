@@ -75,5 +75,10 @@ namespace Coursework
         {
             RightPanel.Content = new CompletedOrdersEditor(store);
         }
+        public void RefreshCars()
+        {
+            if (RightPanel.Content is CarEditor ce)
+                ce.RefreshCarList();
+        }
     }
 }
