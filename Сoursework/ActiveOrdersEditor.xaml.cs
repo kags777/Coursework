@@ -17,7 +17,7 @@ namespace Coursework
             Refresh();
         }
 
-        // Перезагружает список активных заказов
+        // обновляем список активных заказов
         public void Refresh()
         {
             OrdersList.ItemsSource = null;
@@ -26,17 +26,40 @@ namespace Coursework
                 .ToList();
         }
 
-        // Обработчик кнопки "Завершить заказ"
+        // ===== ПРОСМОТР ЗАКАЗА =====
+        private void ViewOrder_Click(object sender, RoutedEventArgs e)
+        {
+            Order order = OrdersList.SelectedItem as Order;
+            if (order == null)
+            {
+                MessageBox.Show("Выберите заказ");
+                return;
+            }
+
+            Window win = new Window
+            {
+                Title = "Просмотр активного заказа",
+                Content = new OrderViewer(order),
+                Width = 500,
+                Height = 600
+            };
+
+            win.ShowDialog();
+        }
+
+        // ===== ЗАВЕРШЕНИЕ ЗАКАЗА =====
         private void CompleteOrder_Click(object sender, RoutedEventArgs e)
         {
-            if (!(OrdersList.SelectedItem is Order order))
+            Order order = OrdersList.SelectedItem as Order;
+            if (order == null)
             {
                 MessageBox.Show("Выберите заказ");
                 return;
             }
 
             // освобождаем водителя
-            order.AssignedDriver?.FreePeriod(order.StartDate, order.EndDate);
+            if (order.AssignedDriver != null)
+                order.AssignedDriver.FreePeriod(order.StartDate, order.EndDate);
 
             // освобождаем машину и увеличиваем пробег
             if (order.AssignedCar != null)
@@ -50,14 +73,14 @@ namespace Coursework
 
             store.Save();
 
-            // обновляем UI
+            // обновляем интерфейс
             main.RefreshActiveOrders();
             main.RefreshCompletedOrders();
-            main.RefreshCars(); // обновляем список машин, чтобы показать новый пробег
+            main.RefreshCars();
 
             MessageBox.Show(
-                $"Заказ выполнен!\n" +
-                $"Пробег машины увеличен на {order.RouteLength} км");
+                "Заказ выполнен!\n" +
+                "Пробег машины увеличен на " + order.RouteLength + " км");
         }
     }
 }
