@@ -33,6 +33,7 @@ namespace Coursework
                 order = new Order
                 {
                     ClientSender = new Client(),
+                    ClientReceiver = new Client(),  // ← Создаем объект получателя!
                     Loads = new List<Cargo>(),
                     Status = OrderStatus.Created
                 };
@@ -53,34 +54,72 @@ namespace Coursework
 
         private void LoadOrderToUI()
         {
-            if (order.ClientSender.ClientType == "Юридическое")
+            if (order == null) return;
+
+            // ===== ЗАГРУЗКА ОТПРАВИТЕЛЯ =====
+            if (order.ClientSender != null)
             {
-                ClientTypeComboBox.SelectedIndex = 1;
-                LegalNameBox.Text = order.ClientSender.NameLegalEntity;
-                LeaderNameBox.Text = order.ClientSender.LeaderName;
-                LegalAddressBox.Text = order.ClientSender.LegalAddress;
-                LegalPhoneBox.Text = order.ClientSender.LegalPhoneNumber;
-                BankBox.Text = order.ClientSender.Bank;
-                BankAccountBox.Text = order.ClientSender.BankAccountNumber;
-                TINBox.Text = order.ClientSender.TIN;
+                if (order.ClientSender.ClientType == "Юридическое")
+                {
+                    ClientTypeComboBox.SelectedIndex = 1;
+                    LegalNameBox.Text = order.ClientSender.NameLegalEntity ?? "";
+                    LeaderNameBox.Text = order.ClientSender.LeaderName ?? "";
+                    LegalAddressBox.Text = order.ClientSender.LegalAddress ?? "";
+                    LegalPhoneBox.Text = order.ClientSender.LegalPhoneNumber ?? "";
+                    BankBox.Text = order.ClientSender.Bank ?? "";
+                    BankAccountBox.Text = order.ClientSender.BankAccountNumber ?? "";
+                    TINBox.Text = order.ClientSender.TIN ?? "";
+                }
+                else // Физическое лицо
+                {
+                    ClientTypeComboBox.SelectedIndex = 0;
+                    NameClientBox.Text = order.ClientSender.NameClient ?? "";
+                    PhoneClientBox.Text = order.ClientSender.PhoneClient ?? "";
+                    PassportBox.Text = order.ClientSender.Passport ?? "";
+                }
             }
             else
             {
+                // Если отправителя нет - по умолчанию физическое лицо
                 ClientTypeComboBox.SelectedIndex = 0;
-                NameClientBox.Text = order.ClientSender.NameClient;
-                PhoneClientBox.Text = order.ClientSender.PhoneClient;
-                PassportBox.Text = order.ClientSender.Passport;
             }
 
-            LoadingAddressBox.Text = order.LoadingAddress;
-            UnloadingAddressBox.Text = order.UnloadingAddress;
+            // ===== ЗАГРУЗКА ПОЛУЧАТЕЛЯ =====
+            if (order.ClientReceiver != null)
+            {
+                if (order.ClientReceiver.ClientType == "Юридическое")
+                {
+                    ReceiverTypeComboBox.SelectedIndex = 1;
+                    ReceiverLegalNameBox.Text = order.ClientReceiver.NameLegalEntity ?? "";
+                    ReceiverTINBox.Text = order.ClientReceiver.TIN ?? "";
+                }
+                else // Физическое лицо
+                {
+                    ReceiverTypeComboBox.SelectedIndex = 0;
+                    ReceiverNameBox.Text = order.ClientReceiver.NameClient ?? "";
+                    ReceiverPhoneBox.Text = order.ClientReceiver.PhoneClient ?? "";
+                }
+            }
+            else
+            {
+                ReceiverTypeComboBox.SelectedIndex = 0;
+            }
+
+            // ===== ЗАГРУЗКА ОСТАЛЬНЫХ ДАННЫХ =====
+            LoadingAddressBox.Text = order.LoadingAddress ?? "";
+            UnloadingAddressBox.Text = order.UnloadingAddress ?? "";
             RouteLengthBox.Text = order.RouteLength.ToString();
 
-            StartDatePicker.SelectedDate =
-                order.StartDate == default ? DateTime.Now : order.StartDate;
+            // Даты
+            if (order.StartDate != default)
+                StartDatePicker.SelectedDate = order.StartDate;
+            else
+                StartDatePicker.SelectedDate = DateTime.Now;
 
-            EndDatePicker.SelectedDate =
-                order.EndDate == default ? DateTime.Now.AddDays(1) : order.EndDate;
+            if (order.EndDate != default)
+                EndDatePicker.SelectedDate = order.EndDate;
+            else
+                EndDatePicker.SelectedDate = DateTime.Now.AddDays(1);
         }
 
         private void AddCargo_Click(object sender, RoutedEventArgs e)
@@ -110,29 +149,50 @@ namespace Coursework
                 return;
             }
 
-            // ===== Клиент =====
-            Client client = new Client();
+            // ===== Клиент-отправитель =====
+            Client senderClient = new Client();
 
             if (ClientTypeComboBox.SelectedIndex == 0)
             {
-                client.ClientType = "Физическое";
-                client.NameClient = NameClientBox.Text;
-                client.PhoneClient = PhoneClientBox.Text;
-                client.Passport = PassportBox.Text;
+                senderClient.ClientType = "Физическое";
+                senderClient.NameClient = NameClientBox.Text;
+                senderClient.PhoneClient = PhoneClientBox.Text;
+                senderClient.Passport = PassportBox.Text;
             }
             else
             {
-                client.ClientType = "Юридическое";
-                client.NameLegalEntity = LegalNameBox.Text;
-                client.LeaderName = LeaderNameBox.Text;
-                client.LegalAddress = LegalAddressBox.Text;
-                client.LegalPhoneNumber = LegalPhoneBox.Text;
-                client.Bank = BankBox.Text;
-                client.BankAccountNumber = BankAccountBox.Text;
-                client.TIN = TINBox.Text;
+                senderClient.ClientType = "Юридическое";
+                senderClient.NameLegalEntity = LegalNameBox.Text;
+                senderClient.LeaderName = LeaderNameBox.Text;
+                senderClient.LegalAddress = LegalAddressBox.Text;
+                senderClient.LegalPhoneNumber = LegalPhoneBox.Text;
+                senderClient.Bank = BankBox.Text;
+                senderClient.BankAccountNumber = BankAccountBox.Text;
+                senderClient.TIN = TINBox.Text;
             }
 
-            order.ClientSender = client;
+            // ===== Клиент-получатель =====
+            Client receiverClient = new Client();
+
+            if (ReceiverTypeComboBox.SelectedIndex == 0)
+            {
+                receiverClient.ClientType = "Физическое";
+                receiverClient.NameClient = ReceiverNameBox.Text;
+                receiverClient.PhoneClient = ReceiverPhoneBox.Text;
+                // Для получателя паспорт обычно не нужен
+            }
+            else
+            {
+                receiverClient.ClientType = "Юридическое";
+                receiverClient.NameLegalEntity = ReceiverLegalNameBox.Text;
+                receiverClient.TIN = ReceiverTINBox.Text;
+                // Если нужно больше полей для юрлица-получателя, добавьте их
+            }
+
+            // ===== Сохраняем оба клиента в заказ =====
+            order.ClientSender = senderClient;
+            order.ClientReceiver = receiverClient;  // ← Вот здесь сохраняем получателя!
+
             order.LoadingAddress = LoadingAddressBox.Text;
             order.UnloadingAddress = UnloadingAddressBox.Text;
             order.RouteLength = float.TryParse(RouteLengthBox.Text, out var len) ? len : 0;
