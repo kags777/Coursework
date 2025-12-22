@@ -14,7 +14,7 @@
         <TextBlock Text="Модель"/>
         <TextBox x:Name="Model"/>
 
-        <TextBlock Text="Грузоподъемность"/>
+        <TextBlock Text="Грузоподъемность (кг)"/>
         <TextBox x:Name="MaxLoad"/>
 
         <TextBlock Text="Назначение"/>
@@ -26,7 +26,7 @@
         <TextBlock Text="Год ремонта"/>
         <TextBox x:Name="YearRepairs"/>
 
-        <TextBlock Text="Пробег"/>
+        <TextBlock Text="Пробег (км)"/>
         <TextBox x:Name="Mileage"/>
 
         <TextBlock Text="Фото (путь)"/>

@@ -11,30 +11,47 @@ namespace Coursework
 
         private DataStore store;
 
-        // Новый конструктор с проверкой дат
-        public AssignDriverCarWindow(DataStore ds, DateTime startDate, DateTime endDate)
+        public AssignDriverCarWindow(
+            DataStore ds,
+            Order order,
+            DateTime startDate,
+            DateTime endDate)
         {
             InitializeComponent();
             store = ds;
 
-            // Фильтруем водителей и машины по занятости
+            // 1. Считаем ОБЩИЙ вес всех грузов
+            double totalWeight = order.Loads.Sum(c => c.Weight);
+
+            // 2. Фильтруем водителей по занятости
             DriverList.ItemsSource = store.Drivers
                 .Where(d => d.IsAvailable(startDate, endDate))
                 .ToList();
 
+            // 3. Фильтруем машины:
+            // - свободны по датам
+            // - выдерживают общий вес
             CarList.ItemsSource = store.Cars
-                .Where(c => c.IsAvailable(startDate, endDate))
+                .Where(car =>
+                    car.IsAvailable(startDate, endDate) &&
+                    car.MaxLoad >= totalWeight
+                )
                 .ToList();
-        }
 
-        public AssignDriverCarWindow(DataStore ds) : this(ds, DateTime.MinValue, DateTime.MinValue)
-        {
-            // оставляем для совместимости, если даты не нужны
+            // 4. Если подходящих машин нет — сразу предупреждаем
+            if (!CarList.Items.Cast<object>().Any())
+            {
+                MessageBox.Show(
+                    $"Нет машин, подходящих по грузоподъёмности.\n" +
+                    $"Общий вес груза: {totalWeight} кг",
+                    "Подбор невозможен");
+            }
         }
 
         private void Assign_Click(object sender, RoutedEventArgs e)
         {
-            if (DriverList.SelectedItem is Driver driver && CarList.SelectedItem is Car car)
+            if (DriverList.SelectedItem is Driver driver &&
+                CarList.SelectedItem is Car car)
             {
                 SelectedDriver = driver;
                 SelectedCar = car;

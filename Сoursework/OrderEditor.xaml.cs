@@ -141,27 +141,24 @@ namespace Coursework
 
             // ===== Назначение водителя и машины =====
             AssignDriverCarWindow assignWin =
-                new AssignDriverCarWindow(store, start, end);
+                new AssignDriverCarWindow(
+                    store,
+                    order,
+                    order.StartDate,
+                    order.EndDate
+                );
 
             if (assignWin.ShowDialog() == true)
             {
                 order.AssignedDriver = assignWin.SelectedDriver;
                 order.AssignedCar = assignWin.SelectedCar;
             }
-
-            if (order.AssignedDriver != null &&
-                !order.AssignedDriver.IsAvailable(start, end))
+            else
             {
-                MessageBox.Show("Выбранный водитель занят");
+                // если пользователь закрыл окно — не сохраняем заказ
                 return;
             }
 
-            if (order.AssignedCar != null &&
-                !order.AssignedCar.IsAvailable(start, end))
-            {
-                MessageBox.Show("Выбранная машина занята");
-                return;
-            }
 
             // ===== Блокировка =====
             if (order.AssignedDriver != null)
