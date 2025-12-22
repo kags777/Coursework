@@ -23,7 +23,7 @@
                 <TextBlock Text="Телефон"/>
                 <TextBox x:Name="PhoneClientBox"/>
 
-                <TextBlock Text="Паспорт"/>
+                <TextBlock Text="Паспорт (Серия, номер, кем выдан)"/>
                 <TextBox x:Name="PassportBox"/>
             </StackPanel>
 
