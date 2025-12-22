@@ -27,7 +27,8 @@ namespace Coursework
         public void FreePeriod(DateTime start, DateTime end)
         {
             BusyPeriods.RemoveAll(p =>
-                p.Item1 == start && p.Item2 == end);
+                p.Item1.Date == start.Date &&  // ← Сравниваем только Date часть
+                p.Item2.Date == end.Date);
         }
 
     }
