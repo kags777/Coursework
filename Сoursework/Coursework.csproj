@@ -85,22 +85,25 @@
     <Compile Include="CreatedOrdersEditor.xaml.cs">
       <DependentUpon>CreatedOrdersEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DataStore.cs" />
+    <Compile Include="Classes\DataStore.cs" />
     <Compile Include="DriverEditor.xaml.cs">
       <DependentUpon>DriverEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="DriverWindow.xaml.cs">
       <DependentUpon>DriverWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ITripServ.cs" />
+    <Compile Include="Interfaces\ICarServ.cs" />
+    <Compile Include="Interfaces\IClientServ.cs" />
+    <Compile Include="Interfaces\IDriverServ.cs" />
+    <Compile Include="Interfaces\ITripServ.cs" />
     <Compile Include="OrderEditor.xaml.cs">
       <DependentUpon>OrderEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OrderStatus.cs" />
+    <Compile Include="Classes\OrderStatus.cs" />
     <Compile Include="OrderViewer.xaml.cs">
       <DependentUpon>OrderViewer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Trip.cs" />
+    <Compile Include="Classes\Trip.cs" />
     <Page Include="ActiveOrdersEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -153,13 +156,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Car.cs" />
-    <Compile Include="Cargo.cs" />
-    <Compile Include="Client.cs" />
-    <Compile Include="Driver.cs" />
-    <Compile Include="ICargoServ.cs" />
-    <Compile Include="ICarServ.cs" />
-    <Compile Include="IOrderServ.cs" />
+    <Compile Include="Classes\Car.cs" />
+    <Compile Include="Classes\Cargo.cs" />
+    <Compile Include="Classes\Client.cs" />
+    <Compile Include="Classes\Driver.cs" />
+    <Compile Include="Interfaces\ICargoServ.cs" />
+    <Compile Include="Interfaces\IOrderServ.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -174,7 +176,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Order.cs" />
+    <Compile Include="Classes\Order.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -201,5 +203,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,6 +1,6 @@
 ﻿namespace Coursework
 {
-    public class Client
+    public class Client:IClientServ
     {
         public string ClientType { get; set; } // "Физическое" или "Юридическое"
                                                // Физическое лицо

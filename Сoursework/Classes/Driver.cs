@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+
 namespace Coursework
 {
-    public class Car
+    public class Driver:IDriverServ
     {
-        public string Number { get; set; }
-        public string Brand { get; set; }
-        public string Model { get; set; }
-        public int MaxLoad { get; set; }
-        public string Appointment { get; set; }
-        public int YearBorn { get; set; }
-        public int YearRepairs { get; set; }
-        public int Mileage { get; set; }
-        public string Photo { get; set; }
+        public int PersNumber { get; set; }
+        public string NameDriver { get; set; }
+        public int Age { get; set; }
+        public int Experience { get; set; }
+        public string Category { get; set; }
+        public string Classic { get; set; }
 
         public List<Tuple<DateTime, DateTime>> BusyPeriods { get; set; } = new List<Tuple<DateTime, DateTime>>();
 
@@ -26,10 +24,6 @@ namespace Coursework
             return true;
         }
 
-        public void MileageCalc(int routeLength)
-        {
-            Mileage += routeLength;
-        }
         public void FreePeriod(DateTime start, DateTime end)
         {
             BusyPeriods.RemoveAll(p =>
